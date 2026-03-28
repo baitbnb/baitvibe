@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
+import baitLogo from "@/assets/bait-logo.png";
 
 const Footer = () => {
   return (
     <footer className="border-t border-border px-6 lg:px-10 py-8 relative z-10">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-primary rounded-sm flex items-center justify-center">
-            <span className="text-primary-foreground font-display font-black text-[10px]">B</span>
-          </div>
+        <div className="flex items-center gap-1">
+          <img src={baitLogo} alt="BAIT" className="h-7 w-7 object-contain" />
           <span className="font-display text-sm font-bold">BAIT</span>
         </div>
 
