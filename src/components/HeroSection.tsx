@@ -53,59 +53,10 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right — Mini dashboard preview */}
+          {/* Right — Banner preview */}
           <div className="animate-slide-in hidden lg:block">
-            <div className="bg-card border border-border rounded overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
-              {/* Tab bar */}
-              <div className="flex items-center gap-0 border-b border-border text-[12px] font-medium">
-                <div className="px-4 py-2.5 text-primary border-b-2 border-primary bg-primary/5">Write</div>
-                <div className="px-4 py-2.5 text-muted-foreground hover:text-foreground transition-colors">Rewrite</div>
-                <div className="px-4 py-2.5 text-muted-foreground hover:text-foreground transition-colors">Thread</div>
-                <div className="ml-auto px-3 py-2.5 flex items-center gap-1.5 text-bnb-green text-[11px] font-mono-ibm">
-                  <span className="w-1.5 h-1.5 bg-bnb-green rounded-full animate-blink" /> AI Ready
-                </div>
-              </div>
-
-              <div className="p-5">
-                {/* Input */}
-                <div className="bg-muted/30 border border-border rounded p-3 mb-3">
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Your idea</div>
-                  <div className="text-[13px] text-foreground/70">We just launched our DeFi protocol on BSC...</div>
-                </div>
-
-                {/* Generate */}
-                <button className="w-full py-2.5 bg-primary text-primary-foreground font-bold text-[13px] rounded mb-4 hover:bg-primary/90 transition-all">
-                  ✨ Generate
-                </button>
-
-                {/* Output */}
-                <div className="bg-bnb-green/5 border border-bnb-green/15 rounded p-3">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-mono-ibm text-bnb-green uppercase">Generated</span>
-                    <span className="text-[10px] font-mono-ibm text-primary">Score: 92</span>
-                  </div>
-                  <div className="text-[13px] leading-relaxed text-foreground/85">
-                    🚀 We didn't fork a protocol.<br />
-                    We built one from scratch on @BNBCHAIN.<br /><br />
-                    → 10x faster · 80% cheaper<br />
-                    → Live now 👇
-                  </div>
-                </div>
-
-                {/* Bottom stats */}
-                <div className="grid grid-cols-3 gap-2 mt-3">
-                  {[
-                    { v: '267', l: 'Chars' },
-                    { v: '92', l: 'Score' },
-                    { v: '4.2x', l: 'Est.' },
-                  ].map((s) => (
-                    <div key={s.l} className="bg-muted/30 rounded py-1.5 text-center">
-                      <div className="font-mono-ibm text-xs font-semibold text-foreground">{s.v}</div>
-                      <div className="text-[9px] text-muted-foreground">{s.l}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <div className="rounded overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)] border border-border">
+              <img src={heroBanner} alt="BAIT AI Tweet Writer Preview" className="w-full h-auto" />
             </div>
           </div>
         </div>
