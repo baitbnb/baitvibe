@@ -1,3 +1,5 @@
+import heroBanner from "@/assets/hero-banner.png";
+
 const HeroSection = () => {
   return (
     <section className="relative min-h-[90vh] flex items-center pt-16 overflow-hidden">
