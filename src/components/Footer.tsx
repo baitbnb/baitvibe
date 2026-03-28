@@ -18,7 +18,7 @@ const Footer = () => {
             { label: 'Discord', href: '#' },
             { label: 'GitHub', href: '#' },
             { label: 'Docs', href: '#' },
-            { label: 'Pricing', href: '/pricing' },
+            
             { label: 'About', href: '/about' },
           ].map((link) => (
             link.href.startsWith('/') ? (
