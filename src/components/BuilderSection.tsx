@@ -6,10 +6,9 @@ const BuilderSection = () => {
         Rewrite Anything.<br />Sound Like a Pro.
       </h2>
       <p className="text-muted-foreground text-base max-w-[480px] leading-relaxed">
-        Paste your boring tweet. YiClaw rewrites it with the style of top Web3 builders — viral, witty, or thought-leader mode.
+        Paste your boring tweet. BAIT rewrites it with the style of top Web3 builders — viral, witty, or thought-leader mode.
       </p>
 
-      {/* Rewriter mockup */}
       <div className="mt-16 grid grid-cols-2 max-md:grid-cols-1 border border-border rounded-2xl overflow-hidden shadow-[0_0_80px_hsl(var(--cyan)/0.06),0_40px_100px_rgba(0,0,0,0.5)]">
         {/* Before panel */}
         <div className="bg-bg-2 p-6 border-r border-border max-md:border-r-0 max-md:border-b">
@@ -37,7 +36,7 @@ const BuilderSection = () => {
             ))}
           </div>
 
-          <button className="w-full mt-4 py-3 bg-gradient-to-br from-gold to-[hsl(32,85%,48%)] rounded-lg text-primary-foreground font-bold text-sm shadow-[0_0_20px_hsl(var(--gold)/0.3)]">
+          <button className="w-full mt-4 py-3 bg-gradient-to-br from-gold to-[hsl(30,40%,48%)] rounded-lg text-primary-foreground font-bold text-sm shadow-[0_0_20px_hsl(var(--gold)/0.3)]">
             ⚡ Rewrite with AI
           </button>
         </div>
@@ -45,7 +44,7 @@ const BuilderSection = () => {
         {/* After panel */}
         <div className="bg-bg-deep/95 p-6">
           <div className="text-[13px] font-semibold text-muted-foreground mb-5 flex items-center gap-2">
-            <span className="text-yi-green text-[10px]">◆</span> Rewritten by YiClaw
+            <span className="text-cyan text-[10px]">◆</span> Rewritten by BAIT
           </div>
 
           <div className="bg-cyan/[0.04] border border-cyan/15 rounded-[10px] px-4 py-4 text-[14px] leading-relaxed mb-4">
@@ -61,7 +60,7 @@ const BuilderSection = () => {
 
           <div className="flex gap-1.5 flex-wrap mb-4">
             {['Viral Style', 'Strong Hook', 'Clear CTA', 'Formatted', 'Engagement Bait'].map((tag) => (
-              <span key={tag} className="font-mono-ibm text-[10px] px-2.5 py-1 rounded-full bg-yi-green/10 border border-yi-green/30 text-yi-green">{tag}</span>
+              <span key={tag} className="font-mono-ibm text-[10px] px-2.5 py-1 rounded-full bg-cyan/10 border border-cyan/30 text-cyan">{tag}</span>
             ))}
           </div>
 
@@ -72,7 +71,7 @@ const BuilderSection = () => {
               { val: '280', lbl: 'Characters' },
             ].map((s) => (
               <div key={s.lbl} className="bg-foreground/[0.03] rounded-lg py-2">
-                <div className="font-mono-ibm text-sm font-semibold text-yi-green">{s.val}</div>
+                <div className="font-mono-ibm text-sm font-semibold text-cyan">{s.val}</div>
                 <div className="text-[10px] text-muted-foreground">{s.lbl}</div>
               </div>
             ))}

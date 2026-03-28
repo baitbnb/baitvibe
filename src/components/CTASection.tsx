@@ -8,8 +8,8 @@ const CTASection = () => {
       </h2>
       <p className="text-base text-muted-foreground mb-10">Stop staring at the blank tweet box. Let AI write your next banger.</p>
       <div className="flex gap-4 justify-center">
-        <button className="relative overflow-hidden bg-gradient-to-br from-gold to-[hsl(32,85%,48%)] text-primary-foreground font-bold text-[15px] px-8 py-3.5 rounded-lg shadow-[0_0_30px_hsl(var(--gold)/0.35),0_4px_20px_rgba(0,0,0,0.4)] hover:-translate-y-0.5 hover:shadow-[0_0_50px_hsl(var(--gold)/0.5)] transition-all">
-          ✍️ Try YiClaw Free
+        <button className="relative overflow-hidden bg-gradient-to-br from-gold to-[hsl(30,40%,48%)] text-primary-foreground font-bold text-[15px] px-8 py-3.5 rounded-lg shadow-[0_0_30px_hsl(var(--gold)/0.35),0_4px_20px_rgba(0,0,0,0.4)] hover:-translate-y-0.5 hover:shadow-[0_0_50px_hsl(var(--gold)/0.5)] transition-all">
+          ✍️ Try BAIT Free
         </button>
         <button className="text-foreground text-[15px] font-medium px-7 py-3.5 rounded-lg border border-foreground/15 hover:border-cyan hover:text-cyan hover:shadow-[0_0_20px_hsl(var(--cyan)/0.15)] transition-all">
           Read Docs →

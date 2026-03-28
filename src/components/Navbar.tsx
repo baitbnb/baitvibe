@@ -2,7 +2,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-[6vw] py-5 bg-background/70 backdrop-blur-xl border-b border-border">
       <div className="font-display text-[22px] font-extrabold bg-gradient-to-r from-gold to-cyan bg-clip-text text-transparent">
-        YiClaw<span className="text-sm opacity-70 ml-1 font-normal">by OpenCLAW</span>
+        BAIT
       </div>
       <div className="hidden md:flex gap-8">
         {['Writer', 'Rewrite', 'Threads', 'Pricing', 'Docs'].map((item) => (

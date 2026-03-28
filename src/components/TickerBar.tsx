@@ -4,7 +4,7 @@ const tickerData = [
   { text: '✍️ Rewritten in 3 sec → 5x more engagement', highlight: false },
   { text: '💡 Idea → viral tweet in one click', highlight: false },
   { text: '🚀 Used by top Web3 founders daily', highlight: true },
-  { text: '⚡ Powered by OpenCLAW AI', highlight: false },
+  { text: '⚡ Powered by BAIT AI', highlight: false },
 ];
 
 const TickerBar = () => {
