@@ -1,86 +1,72 @@
 const BuilderSection = () => {
   return (
-    <section id="rewrite" className="py-24 px-[6vw] relative z-10 bg-bg-3">
-      <p className="font-mono-ibm text-[11px] tracking-[3px] uppercase text-cyan mb-3">// AI Rewriter</p>
-      <h2 className="font-display font-extrabold leading-tight mb-4" style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}>
-        Rewrite Anything.<br />Sound Like a Pro.
-      </h2>
-      <p className="text-muted-foreground text-base max-w-[480px] leading-relaxed">
-        Paste your boring tweet. BAIT rewrites it with the style of top Web3 builders — viral, witty, or thought-leader mode.
-      </p>
+    <section id="rewrite" className="py-20 px-6 lg:px-10 relative z-10 bg-card/50">
+      <div className="max-w-6xl mx-auto">
+        <p className="font-mono-ibm text-[11px] tracking-[3px] uppercase text-primary mb-2">// Live Demo</p>
+        <h2 className="font-display font-black text-3xl md:text-4xl leading-tight mb-3">
+          Before & After <span className="text-primary">Rewrite</span>
+        </h2>
+        <p className="text-muted-foreground text-sm max-w-[440px] mb-12">
+          See how BAIT transforms a basic tweet into engagement gold.
+        </p>
 
-      <div className="mt-16 grid grid-cols-2 max-md:grid-cols-1 border border-border rounded-2xl overflow-hidden shadow-[0_0_80px_hsl(var(--cyan)/0.06),0_40px_100px_rgba(0,0,0,0.5)]">
-        {/* Before panel */}
-        <div className="bg-bg-2 p-6 border-r border-border max-md:border-r-0 max-md:border-b">
-          <div className="text-[13px] font-semibold text-muted-foreground mb-5 flex items-center gap-2">
-            <span className="text-yi-red text-[10px]">◆</span> Original Tweet
+        <div className="grid md:grid-cols-2 gap-px bg-border rounded overflow-hidden">
+          {/* Before */}
+          <div className="bg-card p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-destructive">Before</span>
+              <span className="font-mono-ibm text-[11px] px-2 py-0.5 rounded bg-destructive/10 text-destructive border border-destructive/20">Score: 23</span>
+            </div>
+
+            <div className="bg-muted/30 border border-border rounded p-4 text-[14px] leading-relaxed text-muted-foreground mb-4">
+              We launched a new protocol on BNB chain. It's very fast and cheap. Try it out and let us know what you think. Link below.
+            </div>
+
+            <div className="flex gap-1.5 flex-wrap">
+              {['No hook', 'No structure', 'Weak CTA'].map((tag) => (
+                <span key={tag} className="font-mono-ibm text-[10px] px-2 py-0.5 rounded bg-muted text-muted-foreground">{tag}</span>
+              ))}
+            </div>
           </div>
 
-          <div className="bg-foreground/[0.04] border border-border rounded-[10px] px-4 py-4 text-[14px] leading-relaxed text-muted-foreground mb-4">
-            We launched a new protocol on BNB chain. It's very fast and cheap. Try it out and let us know what you think. Link below.
-          </div>
+          {/* After */}
+          <div className="bg-card p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-bnb-green">After — BAIT</span>
+              <span className="font-mono-ibm text-[11px] px-2 py-0.5 rounded bg-bnb-green/10 text-bnb-green border border-bnb-green/20">Score: 92</span>
+            </div>
 
-          <div className="flex gap-2 flex-wrap mb-4">
-            <span className="font-mono-ibm text-[10px] px-2.5 py-1 rounded-full bg-yi-red/10 border border-yi-red/30 text-yi-red">Score: 23/100</span>
-            <span className="font-mono-ibm text-[10px] px-2.5 py-1 rounded-full bg-foreground/5 border border-border text-muted-foreground">No hook</span>
-            <span className="font-mono-ibm text-[10px] px-2.5 py-1 rounded-full bg-foreground/5 border border-border text-muted-foreground">No structure</span>
-            <span className="font-mono-ibm text-[10px] px-2.5 py-1 rounded-full bg-foreground/5 border border-border text-muted-foreground">Weak CTA</span>
-          </div>
+            <div className="bg-bnb-green/5 border border-bnb-green/10 rounded p-4 text-[14px] leading-relaxed text-foreground/90 mb-4">
+              We didn't fork a protocol.<br />
+              We built one from scratch on @BNBCHAIN.<br /><br />
+              🔹 Sub-second finality<br />
+              🔹 80% cheaper than competitors<br />
+              🔹 Fully composable with PancakeSwap V4<br /><br />
+              Live now. Try it → link in bio<br />
+              RT if you're bullish on BSC DeFi 🔥
+            </div>
 
-          <div className="text-[11px] text-muted-foreground mb-3 font-mono-ibm">Select style:</div>
-          <div className="flex gap-2 flex-wrap">
-            {['🔥 Viral', '🧠 Thought Leader', '😂 Witty', '📢 Hype'].map((style, i) => (
-              <button key={style} className={`text-[11px] px-3 py-1.5 rounded-full border transition-all ${i === 0 ? 'bg-gold/15 border-gold/40 text-gold' : 'border-border text-muted-foreground'}`}>
-                {style}
-              </button>
-            ))}
+            <div className="flex gap-1.5 flex-wrap">
+              {['Strong Hook', 'Formatted', 'Clear CTA', 'Engagement Bait'].map((tag) => (
+                <span key={tag} className="font-mono-ibm text-[10px] px-2 py-0.5 rounded bg-bnb-green/10 text-bnb-green border border-bnb-green/20">{tag}</span>
+              ))}
+            </div>
           </div>
-
-          <button className="w-full mt-4 py-3 bg-gradient-to-br from-gold to-[hsl(30,40%,48%)] rounded-lg text-primary-foreground font-bold text-sm shadow-[0_0_20px_hsl(var(--gold)/0.3)]">
-            ⚡ Rewrite with AI
-          </button>
         </div>
 
-        {/* After panel */}
-        <div className="bg-bg-deep/95 p-6">
-          <div className="text-[13px] font-semibold text-muted-foreground mb-5 flex items-center gap-2">
-            <span className="text-cyan text-[10px]">◆</span> Rewritten by BAIT
-          </div>
-
-          <div className="bg-cyan/[0.04] border border-cyan/15 rounded-[10px] px-4 py-4 text-[14px] leading-relaxed mb-4">
-            <span className="text-foreground">We didn't fork a protocol.</span><br />
-            <span className="text-foreground">We built one from scratch on @BNBCHAIN.</span><br /><br />
-            <span className="text-foreground">🔹 Sub-second finality</span><br />
-            <span className="text-foreground">🔹 80% cheaper than any competitor</span><br />
-            <span className="text-foreground">🔹 Fully composable with PancakeSwap V4</span><br /><br />
-            <span className="text-foreground">The best part? It's live right now.</span><br /><br />
-            <span className="text-foreground">Try it → link in bio</span><br />
-            <span className="text-foreground">RT if you're bullish on BSC DeFi 🔥</span>
-          </div>
-
-          <div className="flex gap-1.5 flex-wrap mb-4">
-            {['Viral Style', 'Strong Hook', 'Clear CTA', 'Formatted', 'Engagement Bait'].map((tag) => (
-              <span key={tag} className="font-mono-ibm text-[10px] px-2.5 py-1 rounded-full bg-cyan/10 border border-cyan/30 text-cyan">{tag}</span>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-3 gap-2 text-center">
-            {[
-              { val: '92/100', lbl: 'Viral Score' },
-              { val: '~4.2x', lbl: 'Engagement Est.' },
-              { val: '280', lbl: 'Characters' },
-            ].map((s) => (
-              <div key={s.lbl} className="bg-foreground/[0.03] rounded-lg py-2">
-                <div className="font-mono-ibm text-sm font-semibold text-cyan">{s.val}</div>
-                <div className="text-[10px] text-muted-foreground">{s.lbl}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex gap-3 mt-4 text-[12px]">
-            <button className="flex-1 py-2.5 bg-gold/10 border border-gold/30 rounded-lg text-gold font-semibold hover:bg-gold/20 transition-all">📋 Copy Tweet</button>
-            <button className="flex-1 py-2.5 border border-border rounded-lg text-muted-foreground hover:text-foreground transition-all">🔄 Try Another Style</button>
-          </div>
+        {/* Stats row */}
+        <div className="grid grid-cols-4 gap-px bg-border mt-px rounded-b overflow-hidden">
+          {[
+            { val: '23 → 92', lbl: 'Viral Score', color: 'text-bnb-green' },
+            { val: '4.2x', lbl: 'Engagement Boost', color: 'text-primary' },
+            { val: '3 sec', lbl: 'Rewrite Time', color: 'text-foreground' },
+            { val: '280', lbl: 'Characters', color: 'text-muted-foreground' },
+          ].map((s) => (
+            <div key={s.lbl} className="bg-card p-4 text-center">
+              <div className={`font-mono-ibm text-lg font-bold ${s.color}`}>{s.val}</div>
+              <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-0.5">{s.lbl}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
