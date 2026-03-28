@@ -1,79 +1,52 @@
 const threadSteps = [
-  {
-    num: '1/5',
-    text: '🧵 We spent 6 months building a DeFi protocol from scratch on BSC. Here\'s everything we learned about building in a bear market:',
-    type: 'Hook',
-  },
-  {
-    num: '2/5',
-    text: 'The biggest mistake builders make? Chasing narratives instead of solving real problems.\n\nWe focused on one thing: sub-second finality with 80% lower fees. That\'s it.',
-    type: 'Insight',
-  },
-  {
-    num: '3/5',
-    text: 'Technical breakthrough: we redesigned the AMM from first principles.\n\n→ No more sandwich attacks\n→ MEV-protected by default\n→ Full composability with @PancakeSwap V4',
-    type: 'Details',
-  },
-  {
-    num: '4/5',
-    text: 'The results after 30 days live:\n\n📊 $2.1M TVL\n📈 847 unique users\n⚡ 12,000+ transactions\n💰 $0.002 avg. gas fee\n\nAll organic. Zero incentives.',
-    type: 'Proof',
-  },
-  {
-    num: '5/5',
-    text: 'If you\'re building in Web3 right now, remember:\n\n1. Ship fast, iterate faster\n2. Users care about UX, not tech\n3. Community > Marketing\n\nWe\'re just getting started. Follow for updates 👇',
-    type: 'CTA',
-  },
+  { num: '01', text: '🧵 We spent 6 months building a DeFi protocol from scratch on BSC. Here\'s everything we learned:', type: 'HOOK' },
+  { num: '02', text: 'The biggest mistake? Chasing narratives instead of solving real problems. We focused on one thing: sub-second finality with 80% lower fees.', type: 'INSIGHT' },
+  { num: '03', text: 'Technical breakthrough: AMM redesigned from first principles.\n→ No sandwich attacks\n→ MEV-protected\n→ Full PancakeSwap V4 composability', type: 'DETAILS' },
+  { num: '04', text: 'Results after 30 days:\n📊 $2.1M TVL · 847 users · 12K+ txns\n💰 $0.002 avg gas · All organic.', type: 'PROOF' },
+  { num: '05', text: 'Building in Web3? Remember:\n1. Ship fast, iterate faster\n2. UX > Tech\n3. Community > Marketing\n\nFollow for updates 👇', type: 'CTA' },
 ];
 
 const MarketplaceSection = () => {
   return (
-    <section id="threads" className="py-24 px-[6vw] relative z-10">
-      <p className="font-mono-ibm text-[11px] tracking-[3px] uppercase text-cyan mb-3">// Thread Builder</p>
-      <h2 className="font-display font-extrabold leading-tight mb-4" style={{ fontSize: 'clamp(32px, 4vw, 52px)' }}>
-        Build Viral Threads.
-      </h2>
-      <p className="text-muted-foreground text-base max-w-[480px] leading-relaxed">
-        Turn one idea into a perfectly structured Twitter thread. BAIT AI writes hooks, insights, and CTAs that drive engagement.
-      </p>
-
-      <div className="mt-16 max-w-[640px] mx-auto">
-        <div className="bg-foreground/[0.03] border border-border rounded-xl p-4 mb-4">
-          <div className="text-[11px] text-muted-foreground uppercase tracking-wider mb-2">Thread topic</div>
-          <div className="text-[14px] text-foreground/70">"Our journey building a DeFi protocol on BSC in a bear market"</div>
+    <section id="threads" className="py-20 px-6 lg:px-10 relative z-10">
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-12">
+          <p className="font-mono-ibm text-[11px] tracking-[3px] uppercase text-primary mb-2">// Thread Builder</p>
+          <h2 className="font-display font-black text-3xl md:text-4xl leading-tight">
+            One Idea → <span className="text-primary">Viral Thread</span>
+          </h2>
         </div>
 
-        <div className="flex gap-2 mb-6">
-          <button className="text-[12px] px-3 py-1.5 rounded-full bg-gold/15 border border-gold/40 text-gold">5 tweets</button>
-          <button className="text-[12px] px-3 py-1.5 rounded-full border border-border text-muted-foreground">7 tweets</button>
-          <button className="text-[12px] px-3 py-1.5 rounded-full border border-border text-muted-foreground">10 tweets</button>
-        </div>
-
+        {/* Thread preview */}
         <div className="space-y-0">
           {threadSteps.map((step, i) => (
-            <div key={i} className="relative pl-8 pb-6">
-              {i < threadSteps.length - 1 && (
-                <div className="absolute left-[11px] top-8 bottom-0 w-px bg-gradient-to-b from-gold/40 to-gold/10" />
-              )}
-              <div className="absolute left-0 top-1 w-[23px] h-[23px] rounded-full bg-gold/15 border border-gold/40 flex items-center justify-center">
-                <span className="text-[9px] font-mono-ibm text-gold font-bold">{step.num}</span>
-              </div>
-              <div className="bg-foreground/[0.03] border border-border rounded-xl p-4 hover:border-gold/20 transition-colors">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="font-mono-ibm text-[10px] px-2 py-0.5 rounded bg-cyan/10 border border-cyan/20 text-cyan">{step.type}</span>
+            <div key={i} className="flex gap-4 group">
+              {/* Timeline */}
+              <div className="flex flex-col items-center">
+                <div className="w-8 h-8 rounded bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                  <span className="text-[10px] font-mono-ibm text-primary font-bold">{step.num}</span>
                 </div>
-                <div className="text-[13px] leading-relaxed whitespace-pre-line">{step.text}</div>
+                {i < threadSteps.length - 1 && <div className="w-px flex-1 bg-border" />}
+              </div>
+
+              {/* Content */}
+              <div className="pb-4 flex-1">
+                <div className="bg-card border border-border rounded p-4 hover:border-primary/20 transition-colors">
+                  <span className="inline-block font-mono-ibm text-[9px] tracking-wider uppercase px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/15 mb-2">{step.type}</span>
+                  <p className="text-[13px] leading-relaxed whitespace-pre-line text-foreground/85">{step.text}</p>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="flex gap-3 mt-2">
-          <button className="flex-1 py-3 bg-gradient-to-br from-gold to-[hsl(30,40%,48%)] rounded-lg text-primary-foreground font-bold text-sm shadow-[0_0_20px_hsl(var(--gold)/0.3)]">
+        {/* Actions */}
+        <div className="flex gap-3 mt-6">
+          <button className="flex-1 py-3 bg-primary text-primary-foreground font-bold text-[13px] rounded hover:bg-primary/90 transition-all">
             📋 Copy All Tweets
           </button>
-          <button className="flex-1 py-3 border border-border rounded-lg text-muted-foreground font-semibold text-sm hover:border-cyan hover:text-cyan transition-all">
-            🔄 Regenerate Thread
+          <button className="flex-1 py-3 border border-border text-muted-foreground font-medium text-[13px] rounded hover:border-primary/40 hover:text-primary transition-all">
+            🔄 Regenerate
           </button>
         </div>
       </div>
