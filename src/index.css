@@ -38,15 +38,15 @@
     --bg-deep: 225 55% 3%;
     --bg-2: 225 45% 5%;
     --bg-3: 225 40% 7.5%;
-    --gold: 42 95% 55%;
-    --gold-light: 45 100% 70%;
-    --cyan: 145 80% 46%;
-    --cyan-dark: 145 70% 36%;
-    --yi-green: 145 80% 46%;
-    --yi-red: 14 90% 55%;
-    --yi-purple: 42 95% 55%;
+    --gold: 30 55% 65%;
+    --gold-light: 35 50% 80%;
+    --cyan: 260 40% 75%;
+    --cyan-dark: 260 35% 55%;
+    --yi-green: 260 40% 75%;
+    --yi-red: 30 40% 48%;
+    --yi-purple: 30 55% 65%;
     --text-secondary: 220 15% 55%;
-    --border-cyan: 145 80% 46% / 0.12;
+    --border-cyan: 260 40% 75% / 0.12;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
