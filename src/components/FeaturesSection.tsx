@@ -1,10 +1,10 @@
 const features = [
-  { icon: '✍️', title: 'AI Tweet Writer', desc: 'Describe your idea in plain English. YiClaw generates scroll-stopping tweets instantly.', color: 'gold' },
+  { icon: '✍️', title: 'AI Tweet Writer', desc: 'Describe your idea in plain English. BAIT generates scroll-stopping tweets instantly.', color: 'gold' },
   { icon: '🔄', title: 'Smart Rewriter', desc: 'Paste a boring tweet, pick a style (viral, witty, professional), and get a polished version in seconds.', color: 'cyan' },
-  { icon: '🧵', title: 'Thread Builder', desc: 'Turn one topic into a full thread with hooks, insights, data points, and a killer CTA.', color: 'yi-green' },
-  { icon: '🎯', title: 'Viral Score', desc: 'Every tweet gets an AI-powered engagement score so you know what will hit before you post.', color: 'yi-purple' },
+  { icon: '🧵', title: 'Thread Builder', desc: 'Turn one topic into a full thread with hooks, insights, data points, and a killer CTA.', color: 'cyan' },
+  { icon: '🎯', title: 'Viral Score', desc: 'Every tweet gets an AI-powered engagement score so you know what will hit before you post.', color: 'gold' },
   { icon: '🧠', title: 'Web3 Native', desc: 'Trained on thousands of top crypto/Web3 tweets. It speaks DeFi, NFTs, and builder culture fluently.', color: 'gold' },
-  { icon: '⚡', title: 'Powered by OpenCLAW', desc: 'Built on OpenCLAW\'s advanced language model — fast, private, and optimized for crypto content.', color: 'cyan' },
+  { icon: '⚡', title: 'Powered by BAIT AI', desc: 'Built on advanced language models — fast, private, and optimized for crypto content.', color: 'cyan' },
 ];
 
 const FeaturesSection = () => {

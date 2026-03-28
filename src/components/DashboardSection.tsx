@@ -6,21 +6,21 @@ const DashboardSection = () => {
         Your Tweet Command Center
       </h2>
       <p className="text-muted-foreground text-base max-w-[480px] leading-relaxed">
-        Paste an idea, pick a style, and let YiClaw craft the perfect tweet. Rewrite drafts, generate from scratch, or build threads.
+        Paste an idea, pick a style, and let BAIT craft the perfect tweet. Rewrite drafts, generate from scratch, or build threads.
       </p>
 
       {/* Writer mockup */}
       <div className="mt-16 border border-border rounded-2xl overflow-hidden shadow-[0_0_80px_hsl(var(--gold)/0.08),0_40px_100px_rgba(0,0,0,0.6)]">
         {/* Title bar */}
         <div className="flex items-center bg-bg-3 text-muted-foreground font-mono-ibm text-xs px-5 py-3 border-b border-border">
-          YiClaw Writer — powered by OpenCLAW
+          BAIT Writer
         </div>
 
         <div className="grid grid-cols-[220px_1fr] max-md:grid-cols-1 min-h-[550px] bg-bg-2">
           {/* Sidebar */}
           <div className="bg-bg-deep/90 border-r border-border py-6 max-md:hidden">
             <div className="font-display text-xl font-extrabold bg-gradient-to-r from-gold to-cyan bg-clip-text text-transparent px-5 pb-5 border-b border-border mb-4">
-              YiClaw
+              BAIT
             </div>
             {[
               { icon: '✍️', label: 'Write Tweet', active: true },
@@ -50,7 +50,7 @@ const DashboardSection = () => {
 
             <div className="mx-3 mt-4 bg-gold/[0.07] border border-gold/20 rounded-lg p-2.5">
               <div className="font-mono-ibm text-[11px] text-gold flex items-center">
-                <span className="inline-block w-1.5 h-1.5 bg-yi-green rounded-full mr-1.5 animate-blink" />
+                <span className="inline-block w-1.5 h-1.5 bg-cyan rounded-full mr-1.5 animate-blink" />
                 Free Plan
               </div>
               <div className="text-xs text-muted-foreground mt-0.5">47 / 50 tweets remaining</div>
@@ -63,8 +63,8 @@ const DashboardSection = () => {
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-display text-[22px] font-bold">Write Tweet</h3>
               <div className="flex gap-2.5 items-center">
-                <span className="flex items-center gap-1.5 bg-yi-green/10 border border-yi-green/30 rounded-full px-3 py-1 font-mono-ibm text-[11px] text-yi-green">
-                  <span className="w-1.5 h-1.5 bg-yi-green rounded-full animate-blink" /> AI Ready
+                <span className="flex items-center gap-1.5 bg-cyan/10 border border-cyan/30 rounded-full px-3 py-1 font-mono-ibm text-[11px] text-cyan">
+                  <span className="w-1.5 h-1.5 bg-cyan rounded-full animate-blink" /> AI Ready
                 </span>
               </div>
             </div>
@@ -86,7 +86,7 @@ const DashboardSection = () => {
               ))}
             </div>
 
-            <button className="w-full py-3 bg-gradient-to-br from-gold to-[hsl(32,85%,48%)] rounded-lg text-primary-foreground font-bold text-sm shadow-[0_0_20px_hsl(var(--gold)/0.3)] mb-5">
+            <button className="w-full py-3 bg-gradient-to-br from-gold to-[hsl(30,40%,48%)] rounded-lg text-primary-foreground font-bold text-sm shadow-[0_0_20px_hsl(var(--gold)/0.3)] mb-5">
               ✨ Generate Tweet
             </button>
 
@@ -95,7 +95,7 @@ const DashboardSection = () => {
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-cyan text-[10px]">◆</span>
                 <span className="text-[13px] font-semibold text-muted-foreground">AI Generated</span>
-                <span className="ml-auto text-[10px] font-mono-ibm text-yi-green">Score: 92/100</span>
+                <span className="ml-auto text-[10px] font-mono-ibm text-cyan">Score: 92/100</span>
               </div>
               <div className="text-[15px] leading-relaxed mb-3">
                 🚀 Big news: we just shipped our DeFi protocol on BSC.<br /><br />
@@ -108,8 +108,8 @@ const DashboardSection = () => {
               <div className="flex gap-3 text-[11px]">
                 <button className="text-gold hover:text-gold-light transition-colors">📋 Copy</button>
                 <button className="text-cyan hover:text-foreground transition-colors">🔄 Regenerate</button>
-                <button className="text-yi-purple hover:text-foreground transition-colors">✏️ Edit</button>
-                <button className="text-yi-green hover:text-foreground transition-colors">🧵 Make Thread</button>
+                <button className="text-gold hover:text-foreground transition-colors">✏️ Edit</button>
+                <button className="text-cyan hover:text-foreground transition-colors">🧵 Make Thread</button>
               </div>
             </div>
 
@@ -117,7 +117,7 @@ const DashboardSection = () => {
             <div className="grid grid-cols-3 gap-3 mt-4">
               {[
                 { val: '267', lbl: 'Characters', color: 'text-foreground' },
-                { val: '92/100', lbl: 'Viral Score', color: 'text-yi-green' },
+                { val: '92/100', lbl: 'Viral Score', color: 'text-cyan' },
                 { val: '~4.2x', lbl: 'Engagement Est.', color: 'text-gold' },
               ].map((s) => (
                 <div key={s.lbl} className="bg-foreground/[0.03] border border-border rounded-lg p-3 text-center">

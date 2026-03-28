@@ -81,8 +81,8 @@ body::after {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(hsl(145 80% 46% / 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(145 80% 46% / 0.03) 1px, transparent 1px);
+    linear-gradient(hsl(260 40% 75% / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(260 40% 75% / 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   pointer-events: none;
   z-index: 0;

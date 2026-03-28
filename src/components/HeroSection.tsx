@@ -3,13 +3,13 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center px-[6vw] overflow-hidden">
       {/* Background gradients */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_60%_40%,hsl(var(--yi-red)/0.1),transparent_60%),radial-gradient(ellipse_60%_80%_at_80%_80%,hsl(var(--cyan)/0.08),transparent_50%),radial-gradient(ellipse_40%_40%_at_20%_60%,hsl(var(--gold)/0.06),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_60%_40%,hsl(var(--gold)/0.1),transparent_60%),radial-gradient(ellipse_60%_80%_at_80%_80%,hsl(var(--cyan)/0.08),transparent_50%),radial-gradient(ellipse_40%_40%_at_20%_60%,hsl(var(--gold)/0.06),transparent_50%)]" />
       </div>
 
       {/* Spinning orb */}
       <div className="absolute right-[-10vw] top-1/2 w-[65vw] h-[65vw] rounded-full animate-spin-slow hidden md:block"
         style={{
-          background: 'conic-gradient(from 0deg, transparent 0%, hsl(14 90% 55% / 0.06) 20%, transparent 40%, hsl(145 80% 46% / 0.05) 60%, transparent 80%)',
+          background: 'conic-gradient(from 0deg, transparent 0%, hsl(30 55% 65% / 0.06) 20%, transparent 40%, hsl(260 40% 75% / 0.05) 60%, transparent 80%)',
           transform: 'translateY(-50%)',
         }}
       />
@@ -23,8 +23,8 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-[55%] max-md:max-w-full">
         {/* Tag */}
         <div className="animate-fade-up inline-flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-4 py-1.5 font-mono-ibm text-[11px] text-gold tracking-[2px] uppercase mb-7">
-          <span className="text-yi-green text-[8px] animate-blink">●</span>
-          Powered by OpenCLAW · AI Tweet Writer
+          <span className="text-cyan text-[8px] animate-blink">●</span>
+          Powered by BAIT · AI Tweet Writer
         </div>
 
         {/* Title */}
@@ -40,7 +40,7 @@ const HeroSection = () => {
 
         {/* Actions */}
         <div className="animate-fade-up-3 flex gap-4 items-center">
-          <button className="relative overflow-hidden bg-gradient-to-br from-gold to-[hsl(32,85%,48%)] text-primary-foreground font-bold text-[15px] px-8 py-3.5 rounded-lg shadow-[0_0_30px_hsl(var(--gold)/0.35),0_4px_20px_rgba(0,0,0,0.4)] hover:-translate-y-0.5 hover:shadow-[0_0_50px_hsl(var(--gold)/0.5),0_8px_30px_rgba(0,0,0,0.5)] transition-all">
+          <button className="relative overflow-hidden bg-gradient-to-br from-gold to-[hsl(30,40%,48%)] text-primary-foreground font-bold text-[15px] px-8 py-3.5 rounded-lg shadow-[0_0_30px_hsl(var(--gold)/0.35),0_4px_20px_rgba(0,0,0,0.4)] hover:-translate-y-0.5 hover:shadow-[0_0_50px_hsl(var(--gold)/0.5),0_8px_30px_rgba(0,0,0,0.5)] transition-all">
             ✍️ Start Writing Free
           </button>
           <button className="text-foreground text-[15px] font-medium px-7 py-3.5 rounded-lg border border-foreground/15 hover:border-cyan hover:text-cyan hover:shadow-[0_0_20px_hsl(var(--cyan)/0.15)] transition-all">
