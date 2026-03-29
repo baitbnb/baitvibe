@@ -30,12 +30,7 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-3">
-        <button className="text-muted-foreground text-[13px] font-medium px-4 py-2 hover:text-foreground transition-colors">
-          Log In
-        </button>
-        <button className="bg-primary text-primary-foreground text-[13px] font-bold px-5 py-2 rounded hover:bg-primary/90 transition-all">
-          Get Started
-        </button>
+        <WalletButton />
       </div>
     </nav>
   );
