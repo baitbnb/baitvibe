@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/bait-logo.png" alt="BAIT Logo" width="180" />
+</p>
+
 # BAIT — AI-Powered Tweet Engine for BNB Chain
 
 <p align="center">
