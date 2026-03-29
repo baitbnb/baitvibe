@@ -68,9 +68,9 @@ const DashboardSection = () => {
                 ))}
               </ul>
 
-              <button className="w-full py-2.5 text-[13px] font-semibold border border-border rounded hover:border-primary hover:text-primary transition-all">
+              <a href={`/write?tab=${product.tag.toLowerCase()}`} className="block w-full py-2.5 text-[13px] font-semibold border border-border rounded hover:border-primary hover:text-primary transition-all text-center">
                 Try {product.title} →
-              </button>
+              </a>
             </div>
           ))}
         </div>

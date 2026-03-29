@@ -8,6 +8,7 @@ import { wagmiConfig } from "@/lib/web3-config";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
+import Write from "./pages/Write";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/write" element={<Write />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
