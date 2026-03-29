@@ -114,12 +114,12 @@ const HeroSection = () => {
             </p>
 
             <div className="animate-fade-up-3 flex gap-3 items-center mb-12">
-              <button className="bg-primary text-primary-foreground font-bold text-sm px-7 py-3 rounded hover:bg-primary/90 shadow-[0_0_30px_hsl(43_96%_56%/0.2)] hover:shadow-[0_0_50px_hsl(43_96%_56%/0.35)] transition-all">
+              <a href="/write" className="inline-flex items-center bg-primary text-primary-foreground font-bold text-sm px-7 py-3 rounded hover:bg-primary/90 shadow-[0_0_30px_hsl(43_96%_56%/0.2)] hover:shadow-[0_0_50px_hsl(43_96%_56%/0.35)] transition-all">
                 Start Writing — Free
-              </button>
-              <button className="text-foreground text-sm font-medium px-6 py-3 rounded border border-border hover:border-primary/40 hover:text-primary transition-all">
+              </a>
+              <a href="#writer" className="inline-flex items-center text-foreground text-sm font-medium px-6 py-3 rounded border border-border hover:border-primary/40 hover:text-primary transition-all">
                 View Demo →
-              </button>
+              </a>
             </div>
 
             <div className="animate-fade-up-4 flex gap-8">
