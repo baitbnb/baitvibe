@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/bait-logo.png" alt="BAIT Logo" width="180" />
+  <img src="../public/bait-logo.png" alt="BAIT Logo" width="180" />
 </p>
 
 # BAIT — 基于 BNB Chain 的 AI 推文引擎
