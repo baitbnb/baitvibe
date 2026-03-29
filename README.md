@@ -13,7 +13,8 @@
   <a href="#features">Features</a> •
   <a href="#use-cases">Use Cases</a> •
   <a href="#architecture">Architecture</a> •
-  <a href="#getting-started">Getting Started</a>
+  <a href="#getting-started">Getting Started</a> •
+  <a href="docs/README.zh-CN.md">中文文档</a>
 </p>
 
 ---
