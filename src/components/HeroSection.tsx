@@ -1,28 +1,94 @@
-import { useEffect, useState } from "react";
-import { TrendingUp, Zap, Users, BarChart3, ArrowUpRight } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { Sparkles, TrendingUp, Heart, MessageCircle, Repeat2, Eye, BarChart3 } from "lucide-react";
 
-const liveFeed = [
-  { user: "@whale_0x9a3", action: "generated 12 viral tweets", time: "2s ago", gain: "+340% reach" },
-  { user: "@bnb_degen", action: "thread got 4.2K likes", time: "8s ago", gain: "+1,200 followers" },
-  { user: "@cryptoKOL_", action: "minted tweet as NFT", time: "14s ago", gain: "0.8 BNB earned" },
-  { user: "@0xBuilder", action: "launched token with BAIT copy", time: "22s ago", gain: "sold out in 3min" },
-  { user: "@alpha_hunter", action: "generated 50 tweets batch", time: "31s ago", gain: "+890% engagement" },
-  { user: "@defi_maxi", action: "auto-posted thread series", time: "45s ago", gain: "+2.1K impressions" },
+const rewriteExamples = [
+  {
+    original: "Just launched our new DeFi protocol on BSC. Check it out.",
+    rewritten: "🚀 We just dropped the MOST anticipated DeFi protocol on @BNBCHAIN\n\nWhat makes it different?\n→ 12x faster swaps\n→ Zero slippage under $50K\n→ Auto-compounding yields\n\nEarly users are already up 340% 👀\n\nDon't fade this. Link in bio 🔗",
+    metrics: { likes: 4_280, retweets: 1_920, replies: 347, views: 284_000 },
+  },
+  {
+    original: "Our token is now available for trading. We have good tokenomics.",
+    rewritten: "The $BAIT token just went LIVE 🟢\n\n• 40% burned at launch 🔥\n• 5% auto-staking rewards\n• Anti-whale: max 1% per wallet\n\nTokenomics so clean, even the devs are aping in.\n\n12,000 wallets in the first hour.\n\nAre you in or watching from the sidelines? 👇",
+    metrics: { likes: 8_120, retweets: 3_400, replies: 892, views: 520_000 },
+  },
+  {
+    original: "We partnered with a big project. More details coming soon.",
+    rewritten: "🤝 PARTNERSHIP ANNOUNCEMENT\n\nWe just locked in a deal with the #1 DEX on BNB Chain.\n\nWhat this means for holders:\n✅ Deep liquidity pools\n✅ Featured trading pair\n✅ Exclusive farming rewards\n\n$2.4M TVL incoming.\n\nThe alpha was right here. RT if you didn't sleep on this 🫡",
+    metrics: { likes: 6_750, retweets: 2_890, replies: 534, views: 410_000 },
+  },
 ];
 
 const HeroSection = () => {
-  const [feedIndex, setFeedIndex] = useState(0);
-  const [tweetCount, setTweetCount] = useState(2_412_847);
+  const [exampleIndex, setExampleIndex] = useState(0);
+  const [phase, setPhase] = useState<"original" | "rewriting" | "rewritten" | "metrics">("original");
+  const [typedText, setTypedText] = useState("");
+  const [metricsAnimated, setMetricsAnimated] = useState({ likes: 0, retweets: 0, replies: 0, views: 0 });
+
+  const current = rewriteExamples[exampleIndex];
+
+  const animateMetrics = useCallback((target: typeof current.metrics) => {
+    const duration = 1200;
+    const steps = 30;
+    const interval = duration / steps;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setMetricsAnimated({
+        likes: Math.floor(target.likes * ease),
+        retweets: Math.floor(target.retweets * ease),
+        replies: Math.floor(target.replies * ease),
+        views: Math.floor(target.views * ease),
+      });
+      if (step >= steps) clearInterval(timer);
+    }, interval);
+    return timer;
+  }, []);
 
   useEffect(() => {
-    const feedTimer = setInterval(() => setFeedIndex((i) => (i + 1) % liveFeed.length), 3000);
-    const countTimer = setInterval(() => setTweetCount((c) => c + Math.floor(Math.random() * 5) + 1), 2000);
-    return () => { clearInterval(feedTimer); clearInterval(countTimer); };
-  }, []);
+    let timeout: ReturnType<typeof setTimeout>;
+    let metricsTimer: ReturnType<typeof setInterval>;
+
+    if (phase === "original") {
+      setTypedText("");
+      setMetricsAnimated({ likes: 0, retweets: 0, replies: 0, views: 0 });
+      timeout = setTimeout(() => setPhase("rewriting"), 2500);
+    } else if (phase === "rewriting") {
+      const fullText = current.rewritten;
+      let charIndex = 0;
+      const typeInterval = setInterval(() => {
+        charIndex++;
+        setTypedText(fullText.slice(0, charIndex));
+        if (charIndex >= fullText.length) {
+          clearInterval(typeInterval);
+          setTimeout(() => setPhase("metrics"), 400);
+        }
+      }, 18);
+      return () => clearInterval(typeInterval);
+    } else if (phase === "metrics") {
+      metricsTimer = animateMetrics(current.metrics);
+      timeout = setTimeout(() => {
+        setExampleIndex((i) => (i + 1) % rewriteExamples.length);
+        setPhase("original");
+      }, 4000);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+      if (metricsTimer) clearInterval(metricsTimer);
+    };
+  }, [phase, current, animateMetrics]);
+
+  const formatNum = (n: number) => {
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+    if (n >= 1_000) return (n / 1_000).toFixed(1) + "K";
+    return n.toString();
+  };
 
   return (
     <section className="relative min-h-[90vh] flex items-center pt-16 overflow-hidden">
-      {/* BG gradient */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,hsl(43_96%_56%/0.08),transparent_60%)]" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
@@ -56,7 +122,6 @@ const HeroSection = () => {
               </button>
             </div>
 
-            {/* Stats bar */}
             <div className="animate-fade-up-4 flex gap-8">
               {[
                 { val: '2.4M+', lbl: 'Tweets Generated' },
@@ -71,73 +136,86 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Right — Live FOMO Dashboard */}
+          {/* Right — AI Rewrite Animation */}
           <div className="animate-slide-in hidden lg:flex flex-col gap-3">
-            {/* Live counter */}
-            <div className="bg-card border border-border rounded-lg p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-primary" />
-                  <span className="text-[11px] font-mono-ibm text-muted-foreground uppercase tracking-wider">Total Tweets Generated</span>
-                </div>
-                <span className="w-2 h-2 bg-bnb-green rounded-full animate-blink" />
+            {/* Original Tweet */}
+            <div className={`bg-card border rounded-lg p-4 transition-all duration-500 ${phase === "original" ? "border-border" : "border-border/30 opacity-50 scale-[0.97]"}`}>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-6 h-6 rounded-full bg-muted" />
+                <span className="text-[12px] font-bold text-foreground">Your Draft</span>
+                <span className="text-[10px] text-muted-foreground font-mono-ibm">@you</span>
               </div>
-              <div className="font-mono-ibm text-3xl font-black text-foreground tabular-nums">
-                {tweetCount.toLocaleString()}
-              </div>
-              <div className="flex items-center gap-1 mt-1">
-                <TrendingUp className="w-3 h-3 text-bnb-green" />
-                <span className="text-[11px] font-mono-ibm text-bnb-green">+12.4% last 24h</span>
+              <p className="text-[13px] text-muted-foreground leading-relaxed">{current.original}</p>
+              <div className="flex items-center gap-4 mt-3 text-muted-foreground/40">
+                <span className="flex items-center gap-1 text-[11px]"><Heart className="w-3 h-3" /> 3</span>
+                <span className="flex items-center gap-1 text-[11px]"><Repeat2 className="w-3 h-3" /> 0</span>
+                <span className="flex items-center gap-1 text-[11px]"><Eye className="w-3 h-3" /> 42</span>
               </div>
             </div>
 
-            {/* Live feed */}
-            <div className="bg-card border border-border rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Users className="w-4 h-4 text-primary" />
-                <span className="text-[11px] font-mono-ibm text-muted-foreground uppercase tracking-wider">Live Activity</span>
-              </div>
-              <div className="space-y-2">
-                {liveFeed.slice(feedIndex, feedIndex + 4).concat(liveFeed.slice(0, Math.max(0, feedIndex + 4 - liveFeed.length))).map((item, i) => (
-                  <div
-                    key={`${item.user}-${i}`}
-                    className={`flex items-center justify-between py-2 px-3 rounded text-[12px] transition-all duration-500 ${i === 0 ? 'bg-primary/5 border border-primary/10' : 'border border-transparent'}`}
-                  >
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-primary font-bold font-mono-ibm shrink-0">{item.user}</span>
-                      <span className="text-muted-foreground truncate">{item.action}</span>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0 ml-2">
-                      <span className="text-bnb-green font-mono-ibm font-bold text-[11px]">{item.gain}</span>
-                      <span className="text-muted-foreground/50 text-[10px]">{item.time}</span>
-                    </div>
-                  </div>
-                ))}
+            {/* Arrow + AI badge */}
+            <div className="flex items-center justify-center gap-2 py-1">
+              <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-bold transition-all duration-300 ${phase === "rewriting" ? "bg-primary text-primary-foreground shadow-[0_0_20px_hsl(43_96%_56%/0.3)] scale-105" : phase === "rewritten" || phase === "metrics" ? "bg-bnb-green/20 text-bnb-green border border-bnb-green/30" : "bg-muted text-muted-foreground"}`}>
+                <Sparkles className={`w-3.5 h-3.5 ${phase === "rewriting" ? "animate-spin" : ""}`} />
+                {phase === "original" ? "Waiting..." : phase === "rewriting" ? "BAIT AI Rewriting..." : "✓ Rewritten"}
               </div>
             </div>
 
-            {/* Mini stats grid */}
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { icon: BarChart3, label: "Avg. Likes", value: "847", change: "+24%" },
-                { icon: ArrowUpRight, label: "Viral Rate", value: "34%", change: "+8.2%" },
-                { icon: Users, label: "Online Now", value: "1,247", change: "live" },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-card border border-border rounded-lg p-3">
-                  <stat.icon className="w-3.5 h-3.5 text-muted-foreground mb-2" />
-                  <div className="font-mono-ibm text-lg font-bold text-foreground">{stat.value}</div>
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider">{stat.label}</div>
-                  <div className={`text-[10px] font-mono-ibm mt-1 ${stat.change === 'live' ? 'text-primary' : 'text-bnb-green'}`}>
-                    {stat.change === 'live' ? (
-                      <span className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 bg-bnb-green rounded-full animate-blink" />
-                        live
-                      </span>
-                    ) : stat.change}
+            {/* Rewritten Tweet */}
+            <div className={`bg-card border rounded-lg p-4 transition-all duration-500 ${phase === "original" ? "border-border/30 opacity-40" : "border-primary/30 shadow-[0_0_30px_hsl(43_96%_56%/0.06)]"}`}>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-primary" />
+                </div>
+                <span className="text-[12px] font-bold text-primary">BAIT Rewrite</span>
+                <span className="text-[10px] text-primary/60 font-mono-ibm">viral mode</span>
+              </div>
+              <div className="text-[13px] text-foreground leading-relaxed whitespace-pre-line min-h-[120px]">
+                {phase === "original" ? (
+                  <span className="text-muted-foreground/30 italic">AI rewrite will appear here...</span>
+                ) : (
+                  <>
+                    {typedText || current.rewritten}
+                    {phase === "rewriting" && <span className="inline-block w-[2px] h-4 bg-primary ml-0.5 animate-blink" />}
+                  </>
+                )}
+              </div>
+
+              {/* Metrics bar */}
+              {(phase === "metrics" || phase === "rewritten") && (
+                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border">
+                  <span className="flex items-center gap-1 text-[11px] text-bnb-red font-mono-ibm font-bold">
+                    <Heart className="w-3 h-3 fill-current" /> {formatNum(metricsAnimated.likes)}
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px] text-bnb-green font-mono-ibm font-bold">
+                    <Repeat2 className="w-3 h-3" /> {formatNum(metricsAnimated.retweets)}
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px] text-primary font-mono-ibm font-bold">
+                    <MessageCircle className="w-3 h-3" /> {formatNum(metricsAnimated.replies)}
+                  </span>
+                  <span className="flex items-center gap-1 text-[11px] text-foreground font-mono-ibm font-bold ml-auto">
+                    <Eye className="w-3 h-3" /> {formatNum(metricsAnimated.views)}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Viral traffic bar */}
+            {(phase === "metrics") && (
+              <div className="bg-bnb-green/5 border border-bnb-green/20 rounded-lg p-3 flex items-center gap-3 animate-fade-up">
+                <TrendingUp className="w-5 h-5 text-bnb-green shrink-0" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[11px] font-mono-ibm text-bnb-green font-bold uppercase tracking-wider">Viral Traffic Boost</span>
+                    <span className="text-[11px] font-mono-ibm text-bnb-green font-black">+{Math.floor(current.metrics.views / 420)}%</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-bnb-green/10 rounded-full overflow-hidden">
+                    <div className="h-full bg-bnb-green rounded-full animate-[grow_1.2s_ease-out_forwards]" style={{ width: '0%' }} />
                   </div>
                 </div>
-              ))}
-            </div>
+                <BarChart3 className="w-4 h-4 text-bnb-green/60 shrink-0" />
+              </div>
+            )}
           </div>
         </div>
       </div>
