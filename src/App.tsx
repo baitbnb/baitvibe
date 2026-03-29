@@ -8,6 +8,7 @@ import { wagmiConfig } from "@/lib/web3-config";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
+import Write from "./pages/Write";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
