@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import baitLogo from "@/assets/bait-logo.png";
+import WalletButton from "./WalletButton";
 
 const Navbar = () => {
   return (
