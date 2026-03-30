@@ -8,6 +8,23 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const LANGUAGES = [
+  { value: "en", label: "English" },
+  { value: "vi", label: "Tiếng Việt" },
+  { value: "zh", label: "中文" },
+  { value: "ja", label: "日本語" },
+  { value: "ko", label: "한국어" },
+  { value: "es", label: "Español" },
+  { value: "fr", label: "Français" },
+  { value: "pt", label: "Português" },
+  { value: "ru", label: "Русский" },
+  { value: "ar", label: "العربية" },
+  { value: "th", label: "ไทย" },
+  { value: "id", label: "Bahasa Indonesia" },
+  { value: "tr", label: "Türkçe" },
+];
 
 type WriteResult = {
   tweet: string;
