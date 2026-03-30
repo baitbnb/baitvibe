@@ -219,9 +219,9 @@ serve(async (req) => {
       );
     }
 
-    if (!["write", "rewrite", "thread"].includes(type)) {
+    if (!["write", "rewrite", "thread", "score"].includes(type)) {
       return new Response(
-        JSON.stringify({ error: "Invalid type. Must be write, rewrite, or thread" }),
+        JSON.stringify({ error: "Invalid type. Must be write, rewrite, thread, or score" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -231,10 +231,13 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const toolChoice =
-      type === "thread"
-        ? { type: "function", function: { name: "format_thread" } }
-        : { type: "function", function: { name: "format_tweet" } };
+    const toolChoiceMap: Record<string, any> = {
+      write: { type: "function", function: { name: "format_tweet" } },
+      rewrite: { type: "function", function: { name: "format_tweet" } },
+      thread: { type: "function", function: { name: "format_thread" } },
+      score: { type: "function", function: { name: "score_tweet" } },
+    };
+    const toolChoice = toolChoiceMap[type];
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
