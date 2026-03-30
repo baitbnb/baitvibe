@@ -248,7 +248,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: systemPrompts[type] },
+          { role: "system", content: systemPrompts[type] + (language && language !== "en" ? `\n\nIMPORTANT: You MUST write the tweet/content in ${languageMap[language] || language}. The tips can remain in English.` : "") },
           { role: "user", content },
         ],
         tools: tools[type as keyof typeof tools],
