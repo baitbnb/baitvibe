@@ -12,18 +12,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const LANGUAGES = [
   { value: "en", label: "English" },
-  { value: "vi", label: "Tiếng Việt" },
-  { value: "zh", label: "中文" },
-  { value: "ja", label: "日本語" },
-  { value: "ko", label: "한국어" },
-  { value: "es", label: "Español" },
-  { value: "fr", label: "Français" },
-  { value: "pt", label: "Português" },
-  { value: "ru", label: "Русский" },
-  { value: "ar", label: "العربية" },
-  { value: "th", label: "ไทย" },
+  { value: "zh", label: "中文 (Chinese)" },
+  { value: "ja", label: "日本語 (Japanese)" },
+  { value: "vi", label: "Tiếng Việt (Vietnamese)" },
+  { value: "ko", label: "한국어 (Korean)" },
+  { value: "es", label: "Español (Spanish)" },
+  { value: "fr", label: "Français (French)" },
+  { value: "pt", label: "Português (Portuguese)" },
+  { value: "ru", label: "Русский (Russian)" },
+  { value: "ar", label: "العربية (Arabic)" },
+  { value: "th", label: "ไทย (Thai)" },
   { value: "id", label: "Bahasa Indonesia" },
-  { value: "tr", label: "Türkçe" },
+  { value: "tr", label: "Türkçe (Turkish)" },
 ];
 
 type WriteResult = {
