@@ -7,6 +7,22 @@ const corsHeaders = {
 };
 
 const systemPrompts: Record<string, string> = {
+  score: `You are a crypto twitter expert who analyzes tweets for viral potential on BNB Chain and Web3.
+
+Given a tweet, analyze it and score it honestly. Don't sugarcoat it.
+
+Evaluate based on:
+- Hook strength: Does the first line make you stop scrolling?
+- Authenticity: Does it sound like a real person or a bot?
+- Emotion: Does it make you feel something?
+- CTA: Does it make people want to engage?
+- Formatting: Is it easy to read? Good use of line breaks?
+- Relevance: Is it timely and relevant to the crypto community?
+
+Be brutally honest. If the tweet is mid, say it's mid. Give specific, actionable feedback on how to improve it.
+
+You MUST call the score_tweet function with your output.`,
+
   write: `You are a crypto native who lives and breathes Web3 on BNB Chain. You write tweets that sound like a real person talking, not a marketing bot.
 
 Given a topic or idea, write ONE tweet that feels authentic and human.
@@ -145,6 +161,47 @@ const tools = {
       },
     },
   ],
+  score: [
+    {
+      type: "function",
+      function: {
+        name: "score_tweet",
+        description: "Score and analyze an existing tweet for viral potential",
+        parameters: {
+          type: "object",
+          properties: {
+            viral_score: {
+              type: "number",
+              description: "Overall viral score 0-100",
+            },
+            breakdown: {
+              type: "object",
+              properties: {
+                hook: { type: "number", description: "Hook strength 0-100" },
+                authenticity: { type: "number", description: "How human it sounds 0-100" },
+                emotion: { type: "number", description: "Emotional impact 0-100" },
+                cta: { type: "number", description: "Call to action effectiveness 0-100" },
+                formatting: { type: "number", description: "Readability and formatting 0-100" },
+              },
+              required: ["hook", "authenticity", "emotion", "cta", "formatting"],
+              additionalProperties: false,
+            },
+            verdict: {
+              type: "string",
+              description: "One line honest verdict like 'solid hook but the CTA is weak' or 'this slaps, ship it'",
+            },
+            tips: {
+              type: "array",
+              items: { type: "string" },
+              description: "2-4 specific actionable tips to improve the tweet",
+            },
+          },
+          required: ["viral_score", "breakdown", "verdict", "tips"],
+          additionalProperties: false,
+        },
+      },
+    },
+  ],
 };
 
 serve(async (req) => {
@@ -162,9 +219,9 @@ serve(async (req) => {
       );
     }
 
-    if (!["write", "rewrite", "thread"].includes(type)) {
+    if (!["write", "rewrite", "thread", "score"].includes(type)) {
       return new Response(
-        JSON.stringify({ error: "Invalid type. Must be write, rewrite, or thread" }),
+        JSON.stringify({ error: "Invalid type. Must be write, rewrite, thread, or score" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -174,10 +231,13 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const toolChoice =
-      type === "thread"
-        ? { type: "function", function: { name: "format_thread" } }
-        : { type: "function", function: { name: "format_tweet" } };
+    const toolChoiceMap: Record<string, any> = {
+      write: { type: "function", function: { name: "format_tweet" } },
+      rewrite: { type: "function", function: { name: "format_tweet" } },
+      thread: { type: "function", function: { name: "format_thread" } },
+      score: { type: "function", function: { name: "score_tweet" } },
+    };
+    const toolChoice = toolChoiceMap[type];
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
