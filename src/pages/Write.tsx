@@ -123,6 +123,7 @@ const WriteTab = () => {
 
 const RewriteTab = () => {
   const [input, setInput] = useState("");
+  const [language, setLanguage] = useState("en");
   const [result, setResult] = useState<WriteResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -133,7 +134,7 @@ const RewriteTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "rewrite", content: input.trim() },
+        body: { type: "rewrite", content: input.trim(), language },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
@@ -165,6 +166,21 @@ const RewriteTab = () => {
           className="bg-muted/30 border-border min-h-[100px] text-sm"
         />
       </div>
+      <div>
+        <label className="font-mono-ibm text-[11px] tracking-[2px] uppercase text-muted-foreground mb-2 block">
+          <Globe className="w-3 h-3 inline mr-1.5 -mt-0.5" />Output Language
+        </label>
+        <Select value={language} onValueChange={setLanguage}>
+          <SelectTrigger className="bg-muted/30 border-border text-sm">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {LANGUAGES.map((lang) => (
+              <SelectItem key={lang.value} value={lang.value}>{lang.flag} {lang.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       <Button onClick={rewrite} disabled={loading || !input.trim()} className="w-full gap-2">
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
         {loading ? "Rewriting..." : "Rewrite for Viral"}
@@ -189,6 +205,7 @@ const RewriteTab = () => {
 
 const ThreadTab = () => {
   const [input, setInput] = useState("");
+  const [language, setLanguage] = useState("en");
   const [result, setResult] = useState<ThreadResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -199,7 +216,7 @@ const ThreadTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "thread", content: input.trim() },
+        body: { type: "thread", content: input.trim(), language },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
@@ -230,6 +247,21 @@ const ThreadTab = () => {
           placeholder="e.g. Why BNB Chain is the best L1 for DeFi builders in 2026..."
           className="bg-muted/30 border-border min-h-[100px] text-sm"
         />
+      </div>
+      <div>
+        <label className="font-mono-ibm text-[11px] tracking-[2px] uppercase text-muted-foreground mb-2 block">
+          <Globe className="w-3 h-3 inline mr-1.5 -mt-0.5" />Output Language
+        </label>
+        <Select value={language} onValueChange={setLanguage}>
+          <SelectTrigger className="bg-muted/30 border-border text-sm">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {LANGUAGES.map((lang) => (
+              <SelectItem key={lang.value} value={lang.value}>{lang.flag} {lang.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       <Button onClick={generate} disabled={loading || !input.trim()} className="w-full gap-2">
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ListOrdered className="w-4 h-4" />}
