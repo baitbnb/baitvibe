@@ -21,6 +21,19 @@ type ThreadResult = {
   tips: string[];
 };
 
+type ScoreResult = {
+  viral_score: number;
+  breakdown: {
+    hook: number;
+    authenticity: number;
+    emotion: number;
+    cta: number;
+    formatting: number;
+  };
+  verdict: string;
+  tips: string[];
+};
+
 const WriteTab = () => {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<WriteResult | null>(null);
