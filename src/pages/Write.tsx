@@ -106,7 +106,7 @@ const WriteTab = () => {
           </SelectTrigger>
           <SelectContent>
             {LANGUAGES.map((lang) => (
-              <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
+              <SelectItem key={lang.value} value={lang.value}>{lang.flag} {lang.label}</SelectItem>
             ))}
           </SelectContent>
         </Select>
