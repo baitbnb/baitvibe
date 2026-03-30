@@ -204,13 +204,28 @@ const tools = {
   ],
 };
 
+const languageMap: Record<string, string> = {
+  vi: "Vietnamese",
+  zh: "Chinese",
+  ja: "Japanese",
+  ko: "Korean",
+  es: "Spanish",
+  fr: "French",
+  pt: "Portuguese",
+  ru: "Russian",
+  ar: "Arabic",
+  th: "Thai",
+  id: "Indonesian",
+  tr: "Turkish",
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { type, content } = await req.json();
+    const { type, content, language } = await req.json();
 
     if (!type || !content) {
       return new Response(
@@ -248,7 +263,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: systemPrompts[type] },
+          { role: "system", content: systemPrompts[type] + (language && language !== "en" ? `\n\nIMPORTANT: You MUST write the tweet/content in ${languageMap[language] || language}. The tips can remain in English.` : "") },
           { role: "user", content },
         ],
         tools: tools[type as keyof typeof tools],

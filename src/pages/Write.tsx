@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Sparkles, Copy, Check, Loader2, PenLine, RefreshCw, ListOrdered, TrendingUp, Lightbulb, Target } from "lucide-react";
+import { Sparkles, Copy, Check, Loader2, PenLine, RefreshCw, ListOrdered, TrendingUp, Lightbulb, Target, Globe } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
@@ -8,6 +8,23 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const LANGUAGES = [
+  { value: "en", label: "English" },
+  { value: "vi", label: "Tiếng Việt" },
+  { value: "zh", label: "中文" },
+  { value: "ja", label: "日本語" },
+  { value: "ko", label: "한국어" },
+  { value: "es", label: "Español" },
+  { value: "fr", label: "Français" },
+  { value: "pt", label: "Português" },
+  { value: "ru", label: "Русский" },
+  { value: "ar", label: "العربية" },
+  { value: "th", label: "ไทย" },
+  { value: "id", label: "Bahasa Indonesia" },
+  { value: "tr", label: "Türkçe" },
+];
 
 type WriteResult = {
   tweet: string;
@@ -36,6 +53,7 @@ type ScoreResult = {
 
 const WriteTab = () => {
   const [input, setInput] = useState("");
+  const [language, setLanguage] = useState("en");
   const [result, setResult] = useState<WriteResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -46,7 +64,7 @@ const WriteTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "write", content: input.trim() },
+        body: { type: "write", content: input.trim(), language },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
@@ -77,6 +95,21 @@ const WriteTab = () => {
           placeholder="e.g. Announce our new DeFi yield aggregator launching on BNB Chain with 12% APY..."
           className="bg-muted/30 border-border min-h-[100px] text-sm"
         />
+      </div>
+      <div>
+        <label className="font-mono-ibm text-[11px] tracking-[2px] uppercase text-muted-foreground mb-2 block">
+          <Globe className="w-3 h-3 inline mr-1.5 -mt-0.5" />Output Language
+        </label>
+        <Select value={language} onValueChange={setLanguage}>
+          <SelectTrigger className="bg-muted/30 border-border text-sm">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {LANGUAGES.map((lang) => (
+              <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
       <Button onClick={generate} disabled={loading || !input.trim()} className="w-full gap-2">
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
