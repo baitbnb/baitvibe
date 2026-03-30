@@ -190,6 +190,7 @@ const RewriteTab = () => {
 
 const ThreadTab = () => {
   const [input, setInput] = useState("");
+  const [language, setLanguage] = useState("en");
   const [result, setResult] = useState<ThreadResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -200,7 +201,7 @@ const ThreadTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "thread", content: input.trim() },
+        body: { type: "thread", content: input.trim(), language },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
