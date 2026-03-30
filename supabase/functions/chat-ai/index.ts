@@ -204,6 +204,21 @@ const tools = {
   ],
 };
 
+const languageMap: Record<string, string> = {
+  vi: "Vietnamese",
+  zh: "Chinese",
+  ja: "Japanese",
+  ko: "Korean",
+  es: "Spanish",
+  fr: "French",
+  pt: "Portuguese",
+  ru: "Russian",
+  ar: "Arabic",
+  th: "Thai",
+  id: "Indonesian",
+  tr: "Turkish",
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
