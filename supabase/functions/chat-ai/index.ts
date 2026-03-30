@@ -161,6 +161,47 @@ const tools = {
       },
     },
   ],
+  score: [
+    {
+      type: "function",
+      function: {
+        name: "score_tweet",
+        description: "Score and analyze an existing tweet for viral potential",
+        parameters: {
+          type: "object",
+          properties: {
+            viral_score: {
+              type: "number",
+              description: "Overall viral score 0-100",
+            },
+            breakdown: {
+              type: "object",
+              properties: {
+                hook: { type: "number", description: "Hook strength 0-100" },
+                authenticity: { type: "number", description: "How human it sounds 0-100" },
+                emotion: { type: "number", description: "Emotional impact 0-100" },
+                cta: { type: "number", description: "Call to action effectiveness 0-100" },
+                formatting: { type: "number", description: "Readability and formatting 0-100" },
+              },
+              required: ["hook", "authenticity", "emotion", "cta", "formatting"],
+              additionalProperties: false,
+            },
+            verdict: {
+              type: "string",
+              description: "One line honest verdict like 'solid hook but the CTA is weak' or 'this slaps, ship it'",
+            },
+            tips: {
+              type: "array",
+              items: { type: "string" },
+              description: "2-4 specific actionable tips to improve the tweet",
+            },
+          },
+          required: ["viral_score", "breakdown", "verdict", "tips"],
+          additionalProperties: false,
+        },
+      },
+    },
+  ],
 };
 
 serve(async (req) => {
