@@ -234,6 +234,90 @@ const ThreadTab = () => {
   );
 };
 
+const ScoreTab = () => {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState<ScoreResult | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const analyze = async () => {
+    if (!input.trim()) return;
+    setLoading(true);
+    setResult(null);
+    try {
+      const { data, error } = await supabase.functions.invoke("chat-ai", {
+        body: { type: "score", content: input.trim() },
+      });
+      if (error) throw error;
+      if (data.error) throw new Error(data.error);
+      setResult(data);
+    } catch (e: any) {
+      toast({ title: "Error", description: e.message || "Failed to analyze tweet", variant: "destructive" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const breakdownLabels: Record<string, string> = {
+    hook: "Hook Strength",
+    authenticity: "Authenticity",
+    emotion: "Emotion",
+    cta: "Call to Action",
+    formatting: "Formatting",
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <label className="font-mono-ibm text-[11px] tracking-[2px] uppercase text-muted-foreground mb-2 block">
+          Paste your tweet to analyze
+        </label>
+        <Textarea
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Paste any tweet here and get an honest viral score breakdown..."
+          className="bg-muted/30 border-border min-h-[100px] text-sm"
+        />
+      </div>
+      <Button onClick={analyze} disabled={loading || !input.trim()} className="w-full gap-2">
+        {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Target className="w-4 h-4" />}
+        {loading ? "Analyzing..." : "Check Viral Score"}
+      </Button>
+
+      {result && (
+        <div className="space-y-4">
+          <ScoreBadge score={result.viral_score} />
+
+          {/* Verdict */}
+          <div className="bg-card border border-primary/20 rounded-lg p-4">
+            <p className="text-sm text-foreground italic">"{result.verdict}"</p>
+          </div>
+
+          {/* Breakdown */}
+          <div className="bg-card border border-border rounded-lg p-4 space-y-3">
+            <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-muted-foreground">Score Breakdown</span>
+            {Object.entries(result.breakdown).map(([key, value]) => {
+              const color = value >= 80 ? "bg-bnb-green" : value >= 50 ? "bg-primary" : "bg-destructive";
+              return (
+                <div key={key} className="space-y-1">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-muted-foreground">{breakdownLabels[key] || key}</span>
+                    <span className="font-mono-ibm text-xs font-bold text-foreground">{value}</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${value}%` }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <TipsCard tips={result.tips} />
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ScoreBadge = ({ score }: { score: number }) => {
   const color = score >= 80 ? "text-bnb-green" : score >= 50 ? "text-primary" : "text-destructive";
   const bg = score >= 80 ? "bg-bnb-green/10 border-bnb-green/20" : score >= 50 ? "bg-primary/10 border-primary/20" : "bg-destructive/10 border-destructive/20";
