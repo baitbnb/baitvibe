@@ -399,7 +399,7 @@ const Write = () => {
               Tweet <span className="text-primary">Command Center</span>
             </h1>
             <p className="text-muted-foreground text-sm">
-              Write, rewrite, or build threads — powered by AI, optimized for Web3.
+              Write, rewrite, score, or build threads — powered by AI, optimized for Web3.
             </p>
           </div>
 
@@ -412,6 +412,9 @@ const Write = () => {
               <TabsTrigger value="rewrite" className="flex-1 gap-1.5 text-xs data-[state=active]:bg-card">
                 <RefreshCw className="w-3.5 h-3.5" /> Rewrite
               </TabsTrigger>
+              <TabsTrigger value="score" className="flex-1 gap-1.5 text-xs data-[state=active]:bg-card">
+                <Target className="w-3.5 h-3.5" /> Score
+              </TabsTrigger>
               <TabsTrigger value="thread" className="flex-1 gap-1.5 text-xs data-[state=active]:bg-card">
                 <ListOrdered className="w-3.5 h-3.5" /> Thread
               </TabsTrigger>
@@ -419,6 +422,7 @@ const Write = () => {
 
             <TabsContent value="write"><WriteTab /></TabsContent>
             <TabsContent value="rewrite"><RewriteTab /></TabsContent>
+            <TabsContent value="score"><ScoreTab /></TabsContent>
             <TabsContent value="thread"><ThreadTab /></TabsContent>
           </Tabs>
         </div>
