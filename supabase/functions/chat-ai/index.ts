@@ -263,7 +263,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: systemPrompts[type] + (language && language !== "en" ? `\n\nIMPORTANT: You MUST write the tweet/content in ${languageMap[language] || language}. The tips can remain in English.` : "") },
+          { role: "system", content: systemPrompts[type] + (language && language !== "en" ? `\n\nCRITICAL INSTRUCTION: Regardless of the input language, you MUST write ALL tweet content and verdict in ${languageMap[language] || language}. The user may write their input in English or any language, but your output tweet/thread/verdict text MUST be in ${languageMap[language] || language}. Only the "tips" array should remain in English.` : "") },
           { role: "user", content },
         ],
         tools: tools[type as keyof typeof tools],
