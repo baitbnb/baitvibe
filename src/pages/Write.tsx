@@ -53,6 +53,7 @@ type ScoreResult = {
 
 const WriteTab = () => {
   const [input, setInput] = useState("");
+  const [language, setLanguage] = useState("en");
   const [result, setResult] = useState<WriteResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -63,7 +64,7 @@ const WriteTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "write", content: input.trim() },
+        body: { type: "write", content: input.trim(), language },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
