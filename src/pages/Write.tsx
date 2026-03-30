@@ -11,19 +11,19 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const LANGUAGES = [
-  { value: "en", label: "English" },
-  { value: "zh", label: "中文 (Chinese)" },
-  { value: "ja", label: "日本語 (Japanese)" },
-  { value: "vi", label: "Tiếng Việt (Vietnamese)" },
-  { value: "ko", label: "한국어 (Korean)" },
-  { value: "es", label: "Español (Spanish)" },
-  { value: "fr", label: "Français (French)" },
-  { value: "pt", label: "Português (Portuguese)" },
-  { value: "ru", label: "Русский (Russian)" },
-  { value: "ar", label: "العربية (Arabic)" },
-  { value: "th", label: "ไทย (Thai)" },
-  { value: "id", label: "Bahasa Indonesia" },
-  { value: "tr", label: "Türkçe (Turkish)" },
+  { value: "en", label: "English", flag: "🇺🇸" },
+  { value: "zh", label: "中文 (Chinese)", flag: "🇨🇳" },
+  { value: "ja", label: "日本語 (Japanese)", flag: "🇯🇵" },
+  { value: "vi", label: "Tiếng Việt (Vietnamese)", flag: "🇻🇳" },
+  { value: "ko", label: "한국어 (Korean)", flag: "🇰🇷" },
+  { value: "es", label: "Español (Spanish)", flag: "🇪🇸" },
+  { value: "fr", label: "Français (French)", flag: "🇫🇷" },
+  { value: "pt", label: "Português (Portuguese)", flag: "🇧🇷" },
+  { value: "ru", label: "Русский (Russian)", flag: "🇷🇺" },
+  { value: "ar", label: "العربية (Arabic)", flag: "🇸🇦" },
+  { value: "th", label: "ไทย (Thai)", flag: "🇹🇭" },
+  { value: "id", label: "Bahasa Indonesia", flag: "🇮🇩" },
+  { value: "tr", label: "Türkçe (Turkish)", flag: "🇹🇷" },
 ];
 
 type WriteResult = {
@@ -106,7 +106,7 @@ const WriteTab = () => {
           </SelectTrigger>
           <SelectContent>
             {LANGUAGES.map((lang) => (
-              <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
+              <SelectItem key={lang.value} value={lang.value}>{lang.flag} {lang.label}</SelectItem>
             ))}
           </SelectContent>
         </Select>
