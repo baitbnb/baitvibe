@@ -210,7 +210,7 @@ serve(async (req) => {
   }
 
   try {
-    const { type, content } = await req.json();
+    const { type, content, language } = await req.json();
 
     if (!type || !content) {
       return new Response(
