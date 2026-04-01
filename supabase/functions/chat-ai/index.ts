@@ -78,7 +78,8 @@ Style guide:
 You MUST call the format_thread function with your output.`,
 };
 
-const tools = {
+// Base tools (non-bilingual)
+const baseTools: Record<string, any[]> = {
   write: [
     {
       type: "function",
@@ -89,15 +90,8 @@ const tools = {
           type: "object",
           properties: {
             tweet: { type: "string", description: "The generated tweet text (must be written in the target output language specified in the prompt)" },
-            viral_score: {
-              type: "number",
-              description: "Estimated viral score 0-100 based on hook strength, formatting, CTA, and engagement potential",
-            },
-            tips: {
-              type: "array",
-              items: { type: "string" },
-              description: "2-4 tips explaining why this tweet will perform well",
-            },
+            viral_score: { type: "number", description: "Estimated viral score 0-100" },
+            tips: { type: "array", items: { type: "string" }, description: "2-4 tips" },
           },
           required: ["tweet", "viral_score", "tips"],
           additionalProperties: false,
@@ -115,15 +109,8 @@ const tools = {
           type: "object",
           properties: {
             tweet: { type: "string", description: "The rewritten tweet text (must be written in the target output language specified in the prompt)" },
-            viral_score: {
-              type: "number",
-              description: "Estimated viral score 0-100",
-            },
-            tips: {
-              type: "array",
-              items: { type: "string" },
-              description: "2-4 tips explaining improvements made",
-            },
+            viral_score: { type: "number", description: "Estimated viral score 0-100" },
+            tips: { type: "array", items: { type: "string" }, description: "2-4 tips" },
           },
           required: ["tweet", "viral_score", "tips"],
           additionalProperties: false,
@@ -140,20 +127,9 @@ const tools = {
         parameters: {
           type: "object",
           properties: {
-            tweets: {
-              type: "array",
-              items: { type: "string" },
-              description: "Array of tweets forming the thread (must be written in the target output language specified in the prompt)",
-            },
-            viral_score: {
-              type: "number",
-              description: "Estimated viral score 0-100 for the full thread",
-            },
-            tips: {
-              type: "array",
-              items: { type: "string" },
-              description: "2-4 tips explaining thread strategy",
-            },
+            tweets: { type: "array", items: { type: "string" }, description: "Array of tweets forming the thread (must be written in the target output language specified in the prompt)" },
+            viral_score: { type: "number", description: "Estimated viral score 0-100" },
+            tips: { type: "array", items: { type: "string" }, description: "2-4 tips" },
           },
           required: ["tweets", "viral_score", "tips"],
           additionalProperties: false,
@@ -170,10 +146,7 @@ const tools = {
         parameters: {
           type: "object",
           properties: {
-            viral_score: {
-              type: "number",
-              description: "Overall viral score 0-100",
-            },
+            viral_score: { type: "number", description: "Overall viral score 0-100" },
             breakdown: {
               type: "object",
               properties: {
@@ -186,17 +159,77 @@ const tools = {
               required: ["hook", "authenticity", "emotion", "cta", "formatting"],
               additionalProperties: false,
             },
-            verdict: {
-              type: "string",
-              description: "One line honest verdict (must be written in the target output language specified in the prompt)",
-            },
-            tips: {
-              type: "array",
-              items: { type: "string" },
-              description: "2-4 specific actionable tips to improve the tweet",
-            },
+            verdict: { type: "string", description: "One line honest verdict (must be written in the target output language specified in the prompt)" },
+            tips: { type: "array", items: { type: "string" }, description: "2-4 specific actionable tips" },
           },
           required: ["viral_score", "breakdown", "verdict", "tips"],
+          additionalProperties: false,
+        },
+      },
+    },
+  ],
+};
+
+// Bilingual tools — adds secondary fields
+const bilingualTools: Record<string, any[]> = {
+  write: [
+    {
+      type: "function",
+      function: {
+        name: "format_tweet",
+        description: "Format two versions of the generated tweet (one in detected input language, one in target language)",
+        parameters: {
+          type: "object",
+          properties: {
+            tweet: { type: "string", description: "The tweet in the auto-detected input language" },
+            tweet_secondary: { type: "string", description: "The tweet translated/written in the target output language" },
+            language_detected: { type: "string", description: "Name of the detected input language (e.g. 'Vietnamese', 'English')" },
+            viral_score: { type: "number", description: "Estimated viral score 0-100" },
+            tips: { type: "array", items: { type: "string" }, description: "2-4 tips in the target output language" },
+          },
+          required: ["tweet", "tweet_secondary", "language_detected", "viral_score", "tips"],
+          additionalProperties: false,
+        },
+      },
+    },
+  ],
+  rewrite: [
+    {
+      type: "function",
+      function: {
+        name: "format_tweet",
+        description: "Format two versions of the rewritten tweet (one in detected input language, one in target language)",
+        parameters: {
+          type: "object",
+          properties: {
+            tweet: { type: "string", description: "The rewritten tweet in the auto-detected input language" },
+            tweet_secondary: { type: "string", description: "The rewritten tweet in the target output language" },
+            language_detected: { type: "string", description: "Name of the detected input language (e.g. 'Vietnamese', 'English')" },
+            viral_score: { type: "number", description: "Estimated viral score 0-100" },
+            tips: { type: "array", items: { type: "string" }, description: "2-4 tips in the target output language" },
+          },
+          required: ["tweet", "tweet_secondary", "language_detected", "viral_score", "tips"],
+          additionalProperties: false,
+        },
+      },
+    },
+  ],
+  thread: [
+    {
+      type: "function",
+      function: {
+        name: "format_thread",
+        description: "Format two versions of the thread (one in detected input language, one in target language)",
+        parameters: {
+          type: "object",
+          properties: {
+            tweets: { type: "array", items: { type: "string" }, description: "Thread tweets in the auto-detected input language" },
+            tweets_secondary: { type: "array", items: { type: "string" }, description: "Thread tweets in the target output language" },
+            language_detected: { type: "string", description: "Name of the detected input language (e.g. 'Vietnamese', 'English')" },
+            viral_score: { type: "number", description: "Estimated viral score 0-100" },
+            tips: { type: "array", items: { type: "string" }, description: "2-4 tips in the target output language" },
+          },
+          required: ["tweets", "tweets_secondary", "language_detected", "viral_score", "tips"],
           additionalProperties: false,
         },
       },
@@ -226,7 +259,7 @@ serve(async (req) => {
   }
 
   try {
-    const { type, content, language } = await req.json();
+    const { type, content, language, bilingual } = await req.json();
 
     if (!type || !content) {
       return new Response(
@@ -256,11 +289,33 @@ serve(async (req) => {
     const toolChoice = toolChoiceMap[type];
 
     const languageName = languageMap[language] || language || "English";
+    const isBilingual = bilingual === true && type !== "score";
 
-    const languageRule = `===== CRITICAL: MANDATORY OUTPUT LANGUAGE =====\nOUTPUT LANGUAGE: ${languageName}\nYou MUST write ALL tweet content, thread tweets, verdicts, and tips ONLY in ${languageName}.\nThe user input may be in ANY language. COMPLETELY IGNORE the input language.\nYour output MUST be in ${languageName} regardless of the input language.\nIF THE INPUT IS IN VIETNAMESE BUT TARGET IS ENGLISH, WRITE IN ENGLISH.\nIF THE INPUT IS IN ENGLISH BUT TARGET IS JAPANESE, WRITE IN JAPANESE.\nNEVER match the input language. ALWAYS use ${languageName}.\n===== END LANGUAGE RULE =====`;
+    let languageRule: string;
+    if (isBilingual) {
+      languageRule = `===== CRITICAL: BILINGUAL MODE =====
+You MUST generate TWO versions of the content:
+1. "tweet" (or "tweets" for threads): Write in the AUTO-DETECTED language of the user's input. Detect what language the user typed in and use THAT language.
+2. "tweet_secondary" (or "tweets_secondary" for threads): Write in ${languageName}.
+3. "language_detected": Set this to the name of the detected input language (e.g. "Vietnamese", "English", "Japanese").
+
+Both versions must convey the same message but be naturally written in their respective languages (not literal translations).
+Tips should be in ${languageName}.
+===== END BILINGUAL RULE =====`;
+    } else {
+      languageRule = `===== CRITICAL: MANDATORY OUTPUT LANGUAGE =====\nOUTPUT LANGUAGE: ${languageName}\nYou MUST write ALL tweet content, thread tweets, verdicts, and tips ONLY in ${languageName}.\nThe user input may be in ANY language. COMPLETELY IGNORE the input language.\nYour output MUST be in ${languageName} regardless of the input language.\nNEVER match the input language. ALWAYS use ${languageName}.\n===== END LANGUAGE RULE =====`;
+    }
 
     const systemContent = languageRule + "\n\n" + systemPrompts[type] + "\n\n" + languageRule;
-    const userContent = `[⚠️ MANDATORY OUTPUT LANGUAGE: ${languageName}]\n\n${content}\n\n[⚠️ ALL OUTPUT MUST BE IN ${languageName}. Input language is IRRELEVANT.]`;
+    
+    let userContent: string;
+    if (isBilingual) {
+      userContent = `[⚠️ BILINGUAL MODE ON | TARGET LANGUAGE: ${languageName}]\n\n${content}\n\n[⚠️ Generate TWO versions: one in the detected input language, one in ${languageName}]`;
+    } else {
+      userContent = `[⚠️ MANDATORY OUTPUT LANGUAGE: ${languageName}]\n\n${content}\n\n[⚠️ ALL OUTPUT MUST BE IN ${languageName}. Input language is IRRELEVANT.]`;
+    }
+
+    const selectedTools = isBilingual ? bilingualTools[type] : baseTools[type as keyof typeof baseTools];
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -274,7 +329,7 @@ serve(async (req) => {
           { role: "system", content: systemContent },
           { role: "user", content: userContent },
         ],
-        tools: tools[type as keyof typeof tools],
+        tools: selectedTools,
         tool_choice: toolChoice,
       }),
     });
@@ -304,10 +359,9 @@ serve(async (req) => {
     const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
 
     if (!toolCall) {
-      // Fallback: try to use the content directly
-      const content = data.choices?.[0]?.message?.content;
+      const rawContent = data.choices?.[0]?.message?.content;
       return new Response(
-        JSON.stringify({ error: "Unexpected response format", raw: content }),
+        JSON.stringify({ error: "Unexpected response format", raw: rawContent }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
