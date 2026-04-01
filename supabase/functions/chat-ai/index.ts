@@ -114,7 +114,7 @@ const tools = {
         parameters: {
           type: "object",
           properties: {
-            tweet: { type: "string", description: "The rewritten tweet text" },
+            tweet: { type: "string", description: "The rewritten tweet text (must be written in the target output language specified in the prompt)" },
             viral_score: {
               type: "number",
               description: "Estimated viral score 0-100",
