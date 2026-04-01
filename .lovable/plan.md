@@ -1,47 +1,66 @@
 
 
-## Problem
+## Bilingual Toggle Feature
 
-The language instruction is appended at the end of a long system prompt, making it easy for the AI model to ignore. The instruction also only applies when `language !== "en"`, and the language enforcement is weak — a single paragraph buried after the style guide.
+### What it does
+A toggle switch on each tab (Write, Rewrite, Thread) that enables bilingual output. When ON, the AI generates **two versions** of each tweet/thread:
+1. **Version 1**: Auto-detected input language (e.g. if user types in Vietnamese, output is Vietnamese)
+2. **Version 2**: The selected target output language
 
-## Plan
+When OFF (default), behavior stays as-is — single output in the selected target language.
 
-**File: `supabase/functions/chat-ai/index.ts`**
+### Changes
 
-1. **Move language instruction to the TOP of the system prompt** — not appended at the end. Prepend a strong, unmissable directive before all other instructions when a non-English language is selected.
+**1. Frontend — `src/pages/Write.tsx`**
 
-2. **Also inject language into the user message** — wrap the user's content with an explicit reminder like:
-   ```
-   [OUTPUT LANGUAGE: Japanese]
-   
-   {user content here}
-   
-   [REMINDER: Write ALL tweet/thread content in Japanese. Do NOT write in English or any other language.]
-   ```
+- Add a `bilingual` boolean state (default `false`) to `WriteTab`, `RewriteTab`, and `ThreadTab`
+- Add a `Switch` toggle labeled "Bilingual Mode" next to the language selector
+- Pass `bilingual: true` in the request body to the edge function when enabled
+- Update result display to show two result cards side-by-side or stacked:
+  - Card 1: labeled with detected input language (e.g. "🇻🇳 Tiếng Việt")
+  - Card 2: labeled with target language (e.g. "🇺🇸 English")
+- Update types: `WriteResult` gets an optional `tweet_secondary` + `language_detected`, `ThreadResult` gets `tweets_secondary` + `language_detected`
+- Each card gets its own copy button
 
-3. **Reinforce in tool parameter descriptions** — update the `tweet`/`tweets`/`verdict` field descriptions in the tools to include "Must be written in the target language specified in the prompt" so the model gets the constraint from multiple angles.
+**2. Backend — `supabase/functions/chat-ai/index.ts`**
 
-4. **Add `en` to the languageMap** — currently missing, which means if someone picks English explicitly, the map returns `undefined`. Add `en: "English"` for completeness.
-
-These 4 changes all happen in the single edge function file. The frontend code (`Write.tsx`) needs no changes.
+- Read `bilingual` from request body
+- When `bilingual === true`:
+  - Update system prompt to instruct: "Generate two versions. First in the detected input language, second in ${targetLanguage}"
+  - Update tool schemas to include secondary fields:
+    - `tweet_secondary` (string) for write/rewrite
+    - `tweets_secondary` (string[]) for thread
+    - `language_detected` (string) — the detected input language name
+  - Use a modified tool definition that includes these extra fields
+- When `bilingual === false`: no change to current behavior
 
 ### Technical Details
 
-- **System prompt prefix** (when language is not English):
-  ```
-  ===== MANDATORY OUTPUT LANGUAGE =====
-  You MUST write ALL tweet content, thread tweets, and verdicts in ${languageName}.
-  The input may be in any language — IGNORE the input language.
-  ONLY the "tips" array stays in English. Everything else MUST be in ${languageName}.
-  ===== END LANGUAGE RULE =====
-  
-  {original system prompt}
-  ```
+**Modified tool schema example (write, bilingual=true):**
+```json
+{
+  "tweet": "detected-language tweet",
+  "tweet_secondary": "target-language tweet",
+  "language_detected": "Vietnamese",
+  "viral_score": 85,
+  "tips": ["..."]
+}
+```
 
-- **User message wrapping**:
-  ```
-  [TARGET LANGUAGE: ${languageName}]\n\n${content}\n\n[WRITE OUTPUT IN ${languageName} ONLY]
-  ```
+**UI layout for bilingual results:**
+```text
+┌─────────────────────────────┐
+│ 🇻🇳 Vietnamese (Detected)   │  [Copy]
+│ tweet content...            │
+├─────────────────────────────┤
+│ 🇺🇸 English (Target)        │  [Copy]
+│ tweet content...            │
+└─────────────────────────────┘
+│ Viral Score: 85             │
+│ Tips: ...                   │
+```
 
-- **Tool descriptions updated** to say e.g. `"The generated tweet text (must be in the target output language)"`
+**Files modified:**
+- `src/pages/Write.tsx` — bilingual toggle UI + dual result display
+- `supabase/functions/chat-ai/index.ts` — bilingual prompt + extended tool schemas
 
