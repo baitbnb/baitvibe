@@ -326,7 +326,7 @@ const ThreadTab = () => {
           </div>
 
           {isBilingualResult ? (
-            <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Detected language thread */}
               <ThreadBlock
                 tweets={result.tweets}
@@ -341,7 +341,7 @@ const ThreadTab = () => {
                 onCopyAll={() => copy(result.tweets_secondary!.join("\n\n---\n\n"), "secondary")}
                 copied={copied === "secondary"}
               />
-            </>
+            </div>
           ) : (
             <>
               <div className="flex justify-end">
@@ -574,38 +574,40 @@ const BilingualResultCard = ({
     <div className="space-y-4">
       <ScoreBadge score={viralScore} />
 
-      {/* Primary — detected language */}
-      <div className="bg-card border border-border rounded-lg p-5">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-muted-foreground" />
-            <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-muted-foreground">
-              {detectedLang} (Detected)
-            </span>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Primary — detected language */}
+        <div className="bg-card border border-border rounded-lg p-5 flex flex-col">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-muted-foreground">
+                {detectedLang} (Detected)
+              </span>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => onCopy(primary, "primary")} className="gap-1.5 text-xs shrink-0">
+              {copied === "primary" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+              {copied === "primary" ? "Copied!" : "Copy"}
+            </Button>
           </div>
-          <Button variant="outline" size="sm" onClick={() => onCopy(primary, "primary")} className="gap-1.5 text-xs">
-            {copied === "primary" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-            {copied === "primary" ? "Copied!" : "Copy"}
-          </Button>
+          <p className="text-sm text-foreground leading-relaxed whitespace-pre-line flex-1">{primary}</p>
         </div>
-        <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{primary}</p>
-      </div>
 
-      {/* Secondary — target language */}
-      <div className="bg-card border border-primary/20 rounded-lg p-5 shadow-[0_0_30px_hsl(43_96%_56%/0.04)]">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-primary">
-              {targetLang.flag} {targetLang.label} (Target)
-            </span>
+        {/* Secondary — target language */}
+        <div className="bg-card border border-primary/20 rounded-lg p-5 shadow-[0_0_30px_hsl(43_96%_56%/0.04)] flex flex-col">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-primary">
+                {targetLang.flag} {targetLang.label} (Target)
+              </span>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => onCopy(secondary, "secondary")} className="gap-1.5 text-xs shrink-0">
+              {copied === "secondary" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+              {copied === "secondary" ? "Copied!" : "Copy"}
+            </Button>
           </div>
-          <Button variant="outline" size="sm" onClick={() => onCopy(secondary, "secondary")} className="gap-1.5 text-xs">
-            {copied === "secondary" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-            {copied === "secondary" ? "Copied!" : "Copy"}
-          </Button>
+          <p className="text-sm text-foreground leading-relaxed whitespace-pre-line flex-1">{secondary}</p>
         </div>
-        <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{secondary}</p>
       </div>
 
       <TipsCard tips={tips} />
@@ -621,7 +623,7 @@ const Write = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-24 pb-16 px-6 lg:px-10">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="mb-8">
             <p className="font-mono-ibm text-[11px] tracking-[3px] uppercase text-primary mb-2">// AI Tools</p>
             <h1 className="font-display font-black text-3xl md:text-4xl leading-tight mb-2">
