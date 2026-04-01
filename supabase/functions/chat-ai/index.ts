@@ -143,7 +143,7 @@ const tools = {
             tweets: {
               type: "array",
               items: { type: "string" },
-              description: "Array of tweets forming the thread",
+              description: "Array of tweets forming the thread (must be written in the target output language specified in the prompt)",
             },
             viral_score: {
               type: "number",
