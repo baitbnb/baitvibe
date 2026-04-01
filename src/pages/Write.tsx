@@ -623,7 +623,7 @@ const Write = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="pt-24 pb-16 px-6 lg:px-10">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="mb-8">
             <p className="font-mono-ibm text-[11px] tracking-[3px] uppercase text-primary mb-2">// AI Tools</p>
             <h1 className="font-display font-black text-3xl md:text-4xl leading-tight mb-2">
