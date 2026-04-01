@@ -59,12 +59,42 @@ type ScoreResult = {
 };
 
 const BilingualToggle = ({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) => (
-  <div className="flex items-center justify-between bg-muted/20 border border-border rounded-lg px-4 py-3">
-    <div>
-      <span className="text-sm font-medium text-foreground">Bilingual Mode</span>
-      <p className="text-[11px] text-muted-foreground mt-0.5">Output in both detected input language & target language</p>
+  <div className="flex items-center gap-2">
+    <Switch checked={checked} onCheckedChange={onChange} id="bilingual" />
+    <label htmlFor="bilingual" className="text-sm text-muted-foreground cursor-pointer select-none">Bilingual</label>
+  </div>
+);
+
+const LanguageRow = ({
+  language,
+  setLanguage,
+  bilingual,
+  setBilingual,
+}: {
+  language: string;
+  setLanguage: (v: string) => void;
+  bilingual: boolean;
+  setBilingual: (v: boolean) => void;
+}) => (
+  <div className="flex items-end gap-4">
+    <div className="flex-1">
+      <label className="font-mono-ibm text-[11px] tracking-[2px] uppercase text-muted-foreground mb-2 block">
+        <Globe className="w-3 h-3 inline mr-1.5 -mt-0.5" />Output Language
+      </label>
+      <Select value={language} onValueChange={setLanguage}>
+        <SelectTrigger className="bg-muted/30 border-border text-sm">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {LANGUAGES.map((lang) => (
+            <SelectItem key={lang.value} value={lang.value}>{lang.flag} {lang.label}</SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
-    <Switch checked={checked} onCheckedChange={onChange} />
+    <div className="pb-2">
+      <BilingualToggle checked={bilingual} onChange={setBilingual} />
+    </div>
   </div>
 );
 
