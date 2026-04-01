@@ -188,7 +188,7 @@ const tools = {
             },
             verdict: {
               type: "string",
-              description: "One line honest verdict like 'solid hook but the CTA is weak' or 'this slaps, ship it'",
+              description: "One line honest verdict (must be written in the target output language specified in the prompt)",
             },
             tips: {
               type: "array",
