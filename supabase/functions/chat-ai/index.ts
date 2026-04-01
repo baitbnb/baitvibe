@@ -205,6 +205,7 @@ const tools = {
 };
 
 const languageMap: Record<string, string> = {
+  en: "English",
   vi: "Vietnamese",
   zh: "Chinese",
   ja: "Japanese",
