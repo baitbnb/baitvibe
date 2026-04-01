@@ -326,7 +326,7 @@ const ThreadTab = () => {
           </div>
 
           {isBilingualResult ? (
-            <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Detected language thread */}
               <ThreadBlock
                 tweets={result.tweets}
@@ -341,7 +341,7 @@ const ThreadTab = () => {
                 onCopyAll={() => copy(result.tweets_secondary!.join("\n\n---\n\n"), "secondary")}
                 copied={copied === "secondary"}
               />
-            </>
+            </div>
           ) : (
             <>
               <div className="flex justify-end">
