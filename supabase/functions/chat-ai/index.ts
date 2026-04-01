@@ -255,6 +255,17 @@ serve(async (req) => {
     };
     const toolChoice = toolChoiceMap[type];
 
+    const isNonEnglish = language && language !== "en";
+    const languageName = languageMap[language] || language;
+
+    let systemContent = systemPrompts[type];
+    let userContent = content;
+
+    if (isNonEnglish) {
+      systemContent = `===== MANDATORY OUTPUT LANGUAGE =====\nYou MUST write ALL tweet content, thread tweets, and verdicts in ${languageName}.\nThe input may be in any language — IGNORE the input language.\nONLY the "tips" array stays in English. Everything else MUST be in ${languageName}.\n===== END LANGUAGE RULE =====\n\n${systemContent}`;
+      userContent = `[TARGET LANGUAGE: ${languageName}]\n\n${content}\n\n[WRITE OUTPUT IN ${languageName} ONLY]`;
+    }
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -264,8 +275,8 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-3-flash-preview",
         messages: [
-          { role: "system", content: systemPrompts[type] + (language && language !== "en" ? `\n\nCRITICAL INSTRUCTION: Regardless of the input language, you MUST write ALL tweet content and verdict in ${languageMap[language] || language}. The user may write their input in English or any language, but your output tweet/thread/verdict text MUST be in ${languageMap[language] || language}. Only the "tips" array should remain in English.` : "") },
-          { role: "user", content },
+          { role: "system", content: systemContent },
+          { role: "user", content: userContent },
         ],
         tools: tools[type as keyof typeof tools],
         tool_choice: toolChoice,
