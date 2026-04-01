@@ -257,8 +257,10 @@ serve(async (req) => {
 
     const languageName = languageMap[language] || language || "English";
 
-    let systemContent = `===== MANDATORY OUTPUT LANGUAGE =====\nYou MUST write ALL tweet content, thread tweets, and verdicts in ${languageName}.\nThe input may be in any language — IGNORE the input language and ALWAYS output in ${languageName}.\nONLY the "tips" array stays in English. Everything else MUST be in ${languageName}.\nDo NOT follow the input language. ALWAYS use ${languageName} for tweet output.\n===== END LANGUAGE RULE =====\n\n${systemPrompts[type]}`;
-    const userContent = `[TARGET OUTPUT LANGUAGE: ${languageName}]\n\n${content}\n\n[REMINDER: You MUST write the tweet/thread in ${languageName}. Do NOT use any other language for the tweet content.]`;
+    const languageRule = `===== CRITICAL: MANDATORY OUTPUT LANGUAGE =====\nOUTPUT LANGUAGE: ${languageName}\nYou MUST write ALL tweet content, thread tweets, verdicts, and tips ONLY in ${languageName}.\nThe user input may be in ANY language. COMPLETELY IGNORE the input language.\nYour output MUST be in ${languageName} regardless of the input language.\nIF THE INPUT IS IN VIETNAMESE BUT TARGET IS ENGLISH, WRITE IN ENGLISH.\nIF THE INPUT IS IN ENGLISH BUT TARGET IS JAPANESE, WRITE IN JAPANESE.\nNEVER match the input language. ALWAYS use ${languageName}.\n===== END LANGUAGE RULE =====`;
+
+    const systemContent = languageRule + "\n\n" + systemPrompts[type] + "\n\n" + languageRule;
+    const userContent = `[⚠️ MANDATORY OUTPUT LANGUAGE: ${languageName}]\n\n${content}\n\n[⚠️ ALL OUTPUT MUST BE IN ${languageName}. Input language is IRRELEVANT.]`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
