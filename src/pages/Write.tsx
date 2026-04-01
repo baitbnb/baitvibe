@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 const LANGUAGES = [
   { value: "en", label: "English", flag: "🇺🇸" },
@@ -26,14 +27,20 @@ const LANGUAGES = [
   { value: "tr", label: "Türkçe (Turkish)", flag: "🇹🇷" },
 ];
 
+const getLangInfo = (code: string) => LANGUAGES.find((l) => l.value === code) || { value: code, label: code, flag: "🌐" };
+
 type WriteResult = {
   tweet: string;
+  tweet_secondary?: string;
+  language_detected?: string;
   viral_score: number;
   tips: string[];
 };
 
 type ThreadResult = {
   tweets: string[];
+  tweets_secondary?: string[];
+  language_detected?: string;
   viral_score: number;
   tips: string[];
 };
@@ -51,12 +58,23 @@ type ScoreResult = {
   tips: string[];
 };
 
+const BilingualToggle = ({ checked, onChange }: { checked: boolean; onChange: (v: boolean) => void }) => (
+  <div className="flex items-center justify-between bg-muted/20 border border-border rounded-lg px-4 py-3">
+    <div>
+      <span className="text-sm font-medium text-foreground">Bilingual Mode</span>
+      <p className="text-[11px] text-muted-foreground mt-0.5">Output in both detected input language & target language</p>
+    </div>
+    <Switch checked={checked} onCheckedChange={onChange} />
+  </div>
+);
+
 const WriteTab = () => {
   const [input, setInput] = useState("");
   const [language, setLanguage] = useState("en");
+  const [bilingual, setBilingual] = useState(false);
   const [result, setResult] = useState<WriteResult | null>(null);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const generate = async () => {
     if (!input.trim()) return;
@@ -64,7 +82,7 @@ const WriteTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "write", content: input.trim(), language },
+        body: { type: "write", content: input.trim(), language, bilingual },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
@@ -76,11 +94,10 @@ const WriteTab = () => {
     }
   };
 
-  const copyTweet = () => {
-    if (!result) return;
-    navigator.clipboard.writeText(result.tweet);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copy = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
   };
 
   return (
@@ -111,12 +128,28 @@ const WriteTab = () => {
           </SelectContent>
         </Select>
       </div>
+      <BilingualToggle checked={bilingual} onChange={setBilingual} />
       <Button onClick={generate} disabled={loading || !input.trim()} className="w-full gap-2">
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
         {loading ? "Generating..." : "Generate Viral Tweet"}
       </Button>
 
-      {result && <ResultCard result={result} onCopy={copyTweet} copied={copied} />}
+      {result && (
+        bilingual && result.tweet_secondary && result.language_detected ? (
+          <BilingualResultCard
+            primary={result.tweet}
+            secondary={result.tweet_secondary}
+            detectedLang={result.language_detected}
+            targetLangCode={language}
+            viralScore={result.viral_score}
+            tips={result.tips}
+            copied={copied}
+            onCopy={copy}
+          />
+        ) : (
+          <ResultCard result={result} onCopy={() => copy(result.tweet, "main")} copied={copied === "main"} />
+        )
+      )}
     </div>
   );
 };
@@ -124,9 +157,10 @@ const WriteTab = () => {
 const RewriteTab = () => {
   const [input, setInput] = useState("");
   const [language, setLanguage] = useState("en");
+  const [bilingual, setBilingual] = useState(false);
   const [result, setResult] = useState<WriteResult | null>(null);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const rewrite = async () => {
     if (!input.trim()) return;
@@ -134,7 +168,7 @@ const RewriteTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "rewrite", content: input.trim(), language },
+        body: { type: "rewrite", content: input.trim(), language, bilingual },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
@@ -146,11 +180,10 @@ const RewriteTab = () => {
     }
   };
 
-  const copyTweet = () => {
-    if (!result) return;
-    navigator.clipboard.writeText(result.tweet);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copy = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
   };
 
   return (
@@ -181,6 +214,7 @@ const RewriteTab = () => {
           </SelectContent>
         </Select>
       </div>
+      <BilingualToggle checked={bilingual} onChange={setBilingual} />
       <Button onClick={rewrite} disabled={loading || !input.trim()} className="w-full gap-2">
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
         {loading ? "Rewriting..." : "Rewrite for Viral"}
@@ -196,7 +230,21 @@ const RewriteTab = () => {
             <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{input}</p>
           </div>
           {/* After */}
-          <ResultCard result={result} onCopy={copyTweet} copied={copied} label="Rewritten by BAIT" />
+          {bilingual && result.tweet_secondary && result.language_detected ? (
+            <BilingualResultCard
+              primary={result.tweet}
+              secondary={result.tweet_secondary}
+              detectedLang={result.language_detected}
+              targetLangCode={language}
+              viralScore={result.viral_score}
+              tips={result.tips}
+              copied={copied}
+              onCopy={copy}
+              label="Rewritten by BAIT"
+            />
+          ) : (
+            <ResultCard result={result} onCopy={() => copy(result.tweet, "main")} copied={copied === "main"} label="Rewritten by BAIT" />
+          )}
         </div>
       )}
     </div>
@@ -206,9 +254,10 @@ const RewriteTab = () => {
 const ThreadTab = () => {
   const [input, setInput] = useState("");
   const [language, setLanguage] = useState("en");
+  const [bilingual, setBilingual] = useState(false);
   const [result, setResult] = useState<ThreadResult | null>(null);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const generate = async () => {
     if (!input.trim()) return;
@@ -216,7 +265,7 @@ const ThreadTab = () => {
     setResult(null);
     try {
       const { data, error } = await supabase.functions.invoke("chat-ai", {
-        body: { type: "thread", content: input.trim(), language },
+        body: { type: "thread", content: input.trim(), language, bilingual },
       });
       if (error) throw error;
       if (data.error) throw new Error(data.error);
@@ -228,12 +277,13 @@ const ThreadTab = () => {
     }
   };
 
-  const copyAll = () => {
-    if (!result) return;
-    navigator.clipboard.writeText(result.tweets.join("\n\n---\n\n"));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const copy = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
   };
+
+  const isBilingualResult = bilingual && result?.tweets_secondary && result?.language_detected;
 
   return (
     <div className="space-y-6">
@@ -263,6 +313,7 @@ const ThreadTab = () => {
           </SelectContent>
         </Select>
       </div>
+      <BilingualToggle checked={bilingual} onChange={setBilingual} />
       <Button onClick={generate} disabled={loading || !input.trim()} className="w-full gap-2">
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ListOrdered className="w-4 h-4" />}
         {loading ? "Building Thread..." : "Generate Thread"}
@@ -270,34 +321,84 @@ const ThreadTab = () => {
 
       {result && (
         <div className="space-y-4">
-          {/* Score + Copy */}
           <div className="flex items-center justify-between">
             <ScoreBadge score={result.viral_score} />
-            <Button variant="outline" size="sm" onClick={copyAll} className="gap-1.5 text-xs">
-              {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-              {copied ? "Copied!" : "Copy All"}
-            </Button>
           </div>
 
-          {/* Thread tweets */}
-          <div className="space-y-2">
-            {result.tweets.map((tweet, i) => (
-              <div key={i} className="bg-card border border-border rounded-lg p-4 relative">
-                <span className="absolute top-3 right-3 font-mono-ibm text-[10px] text-muted-foreground">
-                  {i + 1}/{result.tweets.length}
-                </span>
-                <p className="text-sm text-foreground leading-relaxed whitespace-pre-line pr-10">{tweet}</p>
+          {isBilingualResult ? (
+            <>
+              {/* Detected language thread */}
+              <ThreadBlock
+                tweets={result.tweets}
+                langLabel={`${result.language_detected} (Detected)`}
+                onCopyAll={() => copy(result.tweets.join("\n\n---\n\n"), "primary")}
+                copied={copied === "primary"}
+              />
+              {/* Target language thread */}
+              <ThreadBlock
+                tweets={result.tweets_secondary!}
+                langLabel={`${getLangInfo(language).flag} ${getLangInfo(language).label} (Target)`}
+                onCopyAll={() => copy(result.tweets_secondary!.join("\n\n---\n\n"), "secondary")}
+                copied={copied === "secondary"}
+              />
+            </>
+          ) : (
+            <>
+              <div className="flex justify-end">
+                <Button variant="outline" size="sm" onClick={() => copy(result.tweets.join("\n\n---\n\n"), "all")} className="gap-1.5 text-xs">
+                  {copied === "all" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                  {copied === "all" ? "Copied!" : "Copy All"}
+                </Button>
               </div>
-            ))}
-          </div>
+              <div className="space-y-2">
+                {result.tweets.map((tweet, i) => (
+                  <div key={i} className="bg-card border border-border rounded-lg p-4 relative">
+                    <span className="absolute top-3 right-3 font-mono-ibm text-[10px] text-muted-foreground">
+                      {i + 1}/{result.tweets.length}
+                    </span>
+                    <p className="text-sm text-foreground leading-relaxed whitespace-pre-line pr-10">{tweet}</p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
 
-          {/* Tips */}
           <TipsCard tips={result.tips} />
         </div>
       )}
     </div>
   );
 };
+
+const ThreadBlock = ({
+  tweets,
+  langLabel,
+  onCopyAll,
+  copied,
+}: {
+  tweets: string[];
+  langLabel: string;
+  onCopyAll: () => void;
+  copied: boolean;
+}) => (
+  <div className="space-y-2">
+    <div className="flex items-center justify-between">
+      <span className="font-mono-ibm text-[11px] tracking-wider uppercase text-muted-foreground">{langLabel}</span>
+      <Button variant="outline" size="sm" onClick={onCopyAll} className="gap-1.5 text-xs">
+        {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+        {copied ? "Copied!" : "Copy All"}
+      </Button>
+    </div>
+    {tweets.map((tweet, i) => (
+      <div key={i} className="bg-card border border-border rounded-lg p-4 relative">
+        <span className="absolute top-3 right-3 font-mono-ibm text-[10px] text-muted-foreground">
+          {i + 1}/{tweets.length}
+        </span>
+        <p className="text-sm text-foreground leading-relaxed whitespace-pre-line pr-10">{tweet}</p>
+      </div>
+    ))}
+  </div>
+);
 
 const ScoreTab = () => {
   const [input, setInput] = useState("");
@@ -352,12 +453,10 @@ const ScoreTab = () => {
         <div className="space-y-4">
           <ScoreBadge score={result.viral_score} />
 
-          {/* Verdict */}
           <div className="bg-card border border-primary/20 rounded-lg p-4">
             <p className="text-sm text-foreground italic">"{result.verdict}"</p>
           </div>
 
-          {/* Breakdown */}
           <div className="bg-card border border-border rounded-lg p-4 space-y-3">
             <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-muted-foreground">Score Breakdown</span>
             {Object.entries(result.breakdown).map(([key, value]) => {
@@ -448,6 +547,72 @@ const ResultCard = ({
   </div>
 );
 
+const BilingualResultCard = ({
+  primary,
+  secondary,
+  detectedLang,
+  targetLangCode,
+  viralScore,
+  tips,
+  copied,
+  onCopy,
+  label = "Generated Tweet",
+}: {
+  primary: string;
+  secondary: string;
+  detectedLang: string;
+  targetLangCode: string;
+  viralScore: number;
+  tips: string[];
+  copied: string | null;
+  onCopy: (text: string, key: string) => void;
+  label?: string;
+}) => {
+  const targetLang = getLangInfo(targetLangCode);
+
+  return (
+    <div className="space-y-4">
+      <ScoreBadge score={viralScore} />
+
+      {/* Primary — detected language */}
+      <div className="bg-card border border-border rounded-lg p-5">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-3.5 h-3.5 text-muted-foreground" />
+            <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-muted-foreground">
+              {detectedLang} (Detected)
+            </span>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => onCopy(primary, "primary")} className="gap-1.5 text-xs">
+            {copied === "primary" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+            {copied === "primary" ? "Copied!" : "Copy"}
+          </Button>
+        </div>
+        <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{primary}</p>
+      </div>
+
+      {/* Secondary — target language */}
+      <div className="bg-card border border-primary/20 rounded-lg p-5 shadow-[0_0_30px_hsl(43_96%_56%/0.04)]">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-3.5 h-3.5 text-primary" />
+            <span className="font-mono-ibm text-[10px] tracking-wider uppercase text-primary">
+              {targetLang.flag} {targetLang.label} (Target)
+            </span>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => onCopy(secondary, "secondary")} className="gap-1.5 text-xs">
+            {copied === "secondary" ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+            {copied === "secondary" ? "Copied!" : "Copy"}
+          </Button>
+        </div>
+        <p className="text-sm text-foreground leading-relaxed whitespace-pre-line">{secondary}</p>
+      </div>
+
+      <TipsCard tips={tips} />
+    </div>
+  );
+};
+
 const Write = () => {
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get("tab") || "write";
@@ -457,7 +622,6 @@ const Write = () => {
       <Navbar />
       <div className="pt-24 pb-16 px-6 lg:px-10">
         <div className="max-w-2xl mx-auto">
-          {/* Header */}
           <div className="mb-8">
             <p className="font-mono-ibm text-[11px] tracking-[3px] uppercase text-primary mb-2">// AI Tools</p>
             <h1 className="font-display font-black text-3xl md:text-4xl leading-tight mb-2">
@@ -468,7 +632,6 @@ const Write = () => {
             </p>
           </div>
 
-          {/* Tabs */}
           <Tabs defaultValue={defaultTab} className="w-full">
             <TabsList className="w-full bg-muted/30 border border-border mb-6">
               <TabsTrigger value="write" className="flex-1 gap-1.5 text-xs data-[state=active]:bg-card">
